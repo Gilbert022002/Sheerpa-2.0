@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>My Reservations - Sheerpa</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7ec9df", 
+                        "secondary": "#ef5e21", 
+                        "background-light": "#f6f6f8",
+                        "card-light": "#ffffff",
+                        "text-main-light": "#121118",
+                        "text-sub-light": "#686189",
+                        "border-light": "#f1f0f4",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem"
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-shadow {
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-main-light min-h-screen flex flex-col">
+
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light bg-card-light px-6 py-3 sticky top-0 z-50">
+    <div class="flex items-center gap-8 w-full max-w-[1280px] mx-auto">
+        <div class="flex items-center gap-4 text-text-main-light">
+            <img src="logo-bleu-sheerpa.png" alt="Sheerpa Logo" class="h-16 w-auto object-contain">
+        </div>
+        <label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+            <div class="flex w-full flex-1 items-stretch rounded-lg h-full group">
+                <div class="text-text-sub-light flex border-none bg-background-light items-center justify-center pl-4 rounded-l-lg border-r-0">
+                    <span class="material-symbols-outlined text-[20px]">search</span>
+                </div>
+                <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none text-text-main-light focus:outline-0 focus:ring-0 border-none bg-background-light h-full placeholder:text-text-sub-light px-4 pl-2 text-sm font-normal leading-normal" placeholder="Search guides..." value=""/>
+            </div>
+        </label>
+        <div class="flex flex-1 justify-end gap-6 items-center">
+            <div class="hidden md:flex items-center gap-6">
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Become a Sheerpa</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Find a Guide</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Log In</a>
+            </div>
+            <button class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-5 bg-primary hover:opacity-90 transition-opacity text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                <span class="truncate">Sign Up</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="flex flex-1 w-full max-w-[1280px] mx-auto">
+    <aside class="w-64 hidden lg:flex flex-col gap-2 p-6 border-r border-border-light shrink-0">
+        <nav class="flex flex-col gap-1">
+            <a href="dashboardUser.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-[22px]">person</span> My Profile
+            </a>
+            <a href="myAspirations.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-[22px]">auto_awesome</span> My Aspirations
+            </a>
+            <a href="favoriteCourses.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-[22px]">favorite</span> Favorite Courses
+            </a>
+            <a href="myReservations.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold">
+                <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1">calendar_today</span> My Reservations
+            </a>
+            <a href="invoicesUser.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-[22px]">receipt_long</span> Invoices
+            </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t border-border-light">
+            <button class="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-secondary font-bold hover:bg-secondary/5 transition-all">
+                <span class="material-symbols-outlined">logout</span> Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-6 md:p-8 space-y-8 overflow-y-auto">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-black tracking-tight">My Reservations</h1>
+                <p class="text-text-sub-light font-medium">Manage your upcoming coaching sessions and workshops.</p>
+            </div>
+        </div>
+
+        <section class="space-y-6">
+            <h2 class="text-sm font-black uppercase tracking-[0.2em] text-primary px-2">Upcoming</h2>
+            
+            <div class="grid grid-cols-1 gap-4">
+                <div class="bg-card-light rounded-3xl border border-border-light p-6 soft-shadow group hover:border-primary/40 transition-all">
+                    <div class="flex flex-col lg:flex-row lg:items-center gap-6">
+                        <div class="flex flex-col items-center justify-center size-20 bg-primary/10 rounded-2xl shrink-0">
+                            <span class="text-[10px] font-black uppercase text-primary">Feb</span>
+                            <span class="text-2xl font-black text-primary leading-none">05</span>
+                        </div>
+
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                <p class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Starts in 18 hours</p>
+                            </div>
+                            <h3 class="text-xl font-black mb-1">Introduction to UI Design Masterclass</h3>
+                            <div class="flex flex-wrap gap-4 text-sm text-text-sub-light font-medium">
+                                <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">schedule</span> 14:00 - 15:30 (90 min)</span>
+                                <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">video_camera_front</span> Online via Sheerpa Meet</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 lg:px-6 lg:border-x border-border-light">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="size-12 rounded-full bg-slate-100">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-text-sub-light font-bold">Your Guide</span>
+                                <span class="text-sm font-black">Alex Rivers</span>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button class="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-opacity shadow-lg shadow-primary/20">
+                                Join Session
+                            </button>
+                            <button class="p-3 border border-border-light rounded-xl text-text-sub-light hover:bg-slate-50 transition-colors">
+                                <span class="material-symbols-outlined">more_vert</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-card-light rounded-3xl border border-border-light p-6 soft-shadow opacity-80 hover:opacity-100 transition-all">
+                    <div class="flex flex-col lg:flex-row lg:items-center gap-6">
+                        <div class="flex flex-col items-center justify-center size-20 bg-slate-100 rounded-2xl shrink-0">
+                            <span class="text-[10px] font-black uppercase text-text-sub-light">Feb</span>
+                            <span class="text-2xl font-black text-text-main-light leading-none">12</span>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-xs font-bold text-text-sub-light mb-1 uppercase tracking-wider">Scheduled</p>
+                            <h3 class="text-xl font-black mb-1">Advanced React & Next.js Patterns</h3>
+                            <div class="flex flex-wrap gap-4 text-sm text-text-sub-light font-medium">
+                                <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">schedule</span> 10:00 - 11:30</span>
+                                <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-base">person</span> 1-on-1 Coaching</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 lg:px-6 lg:border-x border-border-light">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sara" class="size-12 rounded-full bg-slate-100">
+                            <div class="flex flex-col">
+                                <span class="text-xs text-text-sub-light font-bold">Your Guide</span>
+                                <span class="text-sm font-black">Sara Ben</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="px-6 py-3 bg-white border border-border-light text-text-main-light font-bold rounded-xl hover:bg-slate-50 transition-colors">
+                                Reschedule
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-6 opacity-60">
+            <h2 class="text-sm font-black uppercase tracking-[0.2em] text-text-sub-light px-2">History</h2>
+            
+            <div class="bg-white rounded-3xl border border-border-light overflow-hidden divide-y divide-border-light">
+                <div class="p-6 flex flex-col md:flex-row md:items-center gap-4 hover:bg-slate-50 transition-colors">
+                    <span class="text-sm font-bold text-text-sub-light w-24">Jan 28, 2026</span>
+                    <h4 class="font-bold flex-1">Career Strategy: From Junior to Mid-Level</h4>
+                    <div class="flex items-center gap-2">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Marc" class="size-6 rounded-full">
+                        <span class="text-sm font-medium">Marc D.</span>
+                    </div>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-black rounded-lg">COMPLETED</span>
+                    <button class="text-primary text-sm font-black hover:underline px-4">Watch Recording</button>
+                </div>
+
+                <div class="p-6 flex flex-col md:flex-row md:items-center gap-4 hover:bg-slate-50 transition-colors">
+                    <span class="text-sm font-bold text-text-sub-light w-24">Jan 15, 2026</span>
+                    <h4 class="font-bold flex-1">Portfolio Review & Feedback</h4>
+                    <div class="flex items-center gap-2">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Elena" class="size-6 rounded-full">
+                        <span class="text-sm font-medium">Elena R.</span>
+                    </div>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-500 text-[10px] font-black rounded-lg">COMPLETED</span>
+                    <button class="text-primary text-sm font-black hover:underline px-4">Review Notes</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Favorite Courses - Sheerpa</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7ec9df", 
+                        "secondary": "#ef5e21", 
+                        "background-light": "#f6f6f8",
+                        "card-light": "#ffffff",
+                        "text-main-light": "#121118",
+                        "text-sub-light": "#686189",
+                        "border-light": "#f1f0f4",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "xl": "1rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem"
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-shadow {
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-main-light min-h-screen flex flex-col">
+
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light bg-card-light px-6 py-3 sticky top-0 z-50">
+    <div class="flex items-center gap-8 w-full max-w-[1280px] mx-auto">
+        <div class="flex items-center gap-4 text-text-main-light">
+            <img src="logo-bleu-sheerpa.png" alt="Sheerpa Logo" class="h-16 w-auto object-contain">
+        </div>
+        <label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+            <div class="flex w-full flex-1 items-stretch rounded-lg h-full group">
+                <div class="text-text-sub-light flex border-none bg-background-light items-center justify-center pl-4 rounded-l-lg border-r-0">
+                    <span class="material-symbols-outlined text-[20px]">search</span>
+                </div>
+                <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none text-text-main-light focus:outline-0 focus:ring-0 border-none bg-background-light h-full placeholder:text-text-sub-light px-4 pl-2 text-sm font-normal leading-normal" placeholder="Search guides..." value=""/>
+            </div>
+        </label>
+        <div class="flex flex-1 justify-end gap-6 items-center">
+            <div class="hidden md:flex items-center gap-6">
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Become a Sheerpa</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Find a Guide</a>
+                <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Log In</a>
+            </div>
+            <button class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-5 bg-primary hover:opacity-90 transition-opacity text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                <span class="truncate">Sign Up</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="flex flex-1 w-full max-w-[1280px] mx-auto">
+    <aside class="w-64 hidden lg:flex flex-col gap-2 p-6 border-r border-border-light shrink-0">
+        <nav class="flex flex-col gap-1">
+            <a href="dashboardUser.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-[22px]">person</span> My Profile
+            </a>
+            <a href="myAspirations.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-[22px]">auto_awesome</span> My Aspirations
+            </a>
+            <a href="favoriteCourses.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold">
+                <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1">favorite</span> Favorite Courses
+            </a>
+            <a href="myReservations.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-[22px]">calendar_today</span> My Reservations
+            </a>
+            <a href="invoicesUser.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined text-[22px]">receipt_long</span> Invoices
+            </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t border-border-light">
+            <button class="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-secondary font-bold hover:bg-secondary/5 transition-all">
+                <span class="material-symbols-outlined">logout</span> Logout
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-6 md:p-8 space-y-8 overflow-y-auto">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-black tracking-tight">Favorite Courses</h1>
+                <p class="text-text-sub-light font-medium">Your curated selection of learning paths and masterclasses.</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="p-3 bg-white border border-border-light rounded-xl text-text-sub-light hover:text-primary transition-colors soft-shadow">
+                    <span class="material-symbols-outlined">filter_list</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            
+            <article class="bg-card-light rounded-[2.5rem] border border-border-light overflow-hidden soft-shadow group hover:border-primary/50 transition-all flex flex-col">
+                <div class="relative h-48 overflow-hidden bg-slate-200">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Course Thumbnail">
+                    <button class="absolute top-4 right-4 z-20 size-10 bg-white rounded-full flex items-center justify-center text-secondary shadow-lg">
+                        <span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1">favorite</span>
+                    </button>
+                    <div class="absolute bottom-4 left-4 z-20">
+                        <span class="px-3 py-1 bg-primary text-white text-[10px] font-black uppercase tracking-widest rounded-lg">Development</span>
+                    </div>
+                </div>
+                <div class="p-6 flex flex-1 flex-col">
+                    <h3 class="text-xl font-black leading-tight mb-3 group-hover:text-primary transition-colors">Modern React & Next.js Patterns</h3>
+                    <p class="text-sm text-text-sub-light line-clamp-2 mb-6">Learn to build high-performance applications using the latest features of Next.js 14.</p>
+                    
+                    <div class="flex items-center gap-3 mb-6 pt-4 border-t border-border-light">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Marc" class="size-10 rounded-xl bg-primary/5">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-black">Marc Durand</span>
+                            <span class="text-[10px] text-text-sub-light font-bold">Principal Engineer</span>
+                        </div>
+                        <div class="ml-auto flex items-center gap-1 text-amber-400">
+                            <span class="material-symbols-outlined text-xs fill" style="font-variation-settings: 'FILL' 1">star</span>
+                            <span class="text-xs font-black text-text-main-light">4.9</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto flex items-center justify-between gap-4">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-text-sub-light font-bold uppercase tracking-tighter">Price</span>
+                            <span class="text-lg font-black text-text-main-light">$89.00</span>
+                        </div>
+                        <button class="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-opacity">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="bg-card-light rounded-[2.5rem] border border-border-light overflow-hidden soft-shadow group hover:border-primary/50 transition-all flex flex-col">
+                <div class="relative h-48 overflow-hidden bg-slate-200">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Course Thumbnail">
+                    <button class="absolute top-4 right-4 z-20 size-10 bg-white rounded-full flex items-center justify-center text-secondary shadow-lg">
+                        <span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1">favorite</span>
+                    </button>
+                    <div class="absolute bottom-4 left-4 z-20">
+                        <span class="px-3 py-1 bg-secondary text-white text-[10px] font-black uppercase tracking-widest rounded-lg">Design</span>
+                    </div>
+                </div>
+                <div class="p-6 flex flex-1 flex-col">
+                    <h3 class="text-xl font-black leading-tight mb-3 group-hover:text-primary transition-colors">Advanced UI/UX Masterclass</h3>
+                    <p class="text-sm text-text-sub-light line-clamp-2 mb-6">From wireframes to high-fidelity prototypes. Master Figma and Design Systems.</p>
+                    
+                    <div class="flex items-center gap-3 mb-6 pt-4 border-t border-border-light">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Elena" class="size-10 rounded-xl bg-primary/5">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-black">Elena Rodriguez</span>
+                            <span class="text-[10px] text-text-sub-light font-bold">Product Designer</span>
+                        </div>
+                        <div class="ml-auto flex items-center gap-1 text-amber-400">
+                            <span class="material-symbols-outlined text-xs fill" style="font-variation-settings: 'FILL' 1">star</span>
+                            <span class="text-xs font-black text-text-main-light">5.0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto flex items-center justify-between gap-4">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-text-sub-light font-bold uppercase tracking-tighter">Price</span>
+                            <span class="text-lg font-black text-text-main-light">$120.00</span>
+                        </div>
+                        <button class="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-opacity">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="bg-card-light rounded-[2.5rem] border border-border-light overflow-hidden soft-shadow group hover:border-primary/50 transition-all flex flex-col">
+                <div class="relative h-48 overflow-hidden bg-slate-200">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Course Thumbnail">
+                    <button class="absolute top-4 right-4 z-20 size-10 bg-white rounded-full flex items-center justify-center text-secondary shadow-lg">
+                        <span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1">favorite</span>
+                    </button>
+                    <div class="absolute bottom-4 left-4 z-20">
+                        <span class="px-3 py-1 bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-lg">Career</span>
+                    </div>
+                </div>
+                <div class="p-6 flex flex-1 flex-col">
+                    <h3 class="text-xl font-black leading-tight mb-3 group-hover:text-primary transition-colors">Salary Negotiation Scripts</h3>
+                    <p class="text-sm text-text-sub-light line-clamp-2 mb-6">Psychological triggers and exact scripts to increase your offer by 20% or more.</p>
+                    
+                    <div class="flex items-center gap-3 mb-6 pt-4 border-t border-border-light">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=James" class="size-10 rounded-xl bg-primary/5">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-black">James Wilson</span>
+                            <span class="text-[10px] text-text-sub-light font-bold">HR Director</span>
+                        </div>
+                        <div class="ml-auto flex items-center gap-1 text-amber-400">
+                            <span class="material-symbols-outlined text-xs fill" style="font-variation-settings: 'FILL' 1">star</span>
+                            <span class="text-xs font-black text-text-main-light">4.7</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto flex items-center justify-between gap-4">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] text-text-sub-light font-bold uppercase tracking-tighter">Price</span>
+                            <span class="text-lg font-black text-text-main-light">$45.00</span>
+                        </div>
+                        <button class="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:opacity-90 transition-opacity">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        </main>
+</div>
+
+</body>
+</html>
