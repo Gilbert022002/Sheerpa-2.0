@@ -32,6 +32,9 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->intended('/admin/dashboard');
+            }
             if ($user->role === 'instructor') {
                 return redirect()->intended('/instructor/dashboard');
             }
@@ -65,15 +68,24 @@ class AuthController extends Controller
             'role' => ['required', 'string', Rule::in(['user', 'instructor'])],
         ]);
 
-        $user = User::create([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-        ]);
+        ];
+
+        if ($request->role === 'instructor') {
+            $data['instructor_status'] = 'pending';
+        }
+
+        $user = User::create($data);
 
         Auth::login($user);
         
+        if ($user->role === 'admin') {
+            return redirect('/admin/dashboard');
+        }
         if ($user->role === 'instructor') {
             return redirect('/instructor/dashboard');
         }

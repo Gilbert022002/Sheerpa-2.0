@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\AdminController; // Added this line
 
 // Page d'accueil, redirige vers le login pour le moment
 Route::get('/', function () {
@@ -22,6 +24,9 @@ Route::middleware(['auth'])->group(function () {
         if (auth()->user()->role === 'instructor') {
             return redirect()->route('instructor.dashboard');
         }
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
         return view('dashboardUser');
     })->name('dashboard');
 
@@ -31,4 +36,14 @@ Route::middleware(['auth'])->group(function () {
         }
         return view('instructeur dashboard');
     })->name('instructor.dashboard');
+
+    Route::post('/instructor/details', [InstructorController::class, 'storeDetails'])->name('instructor.storeDetails');
+
+    // Admin routes
+    Route::middleware(['can:admin'])->group(function () { // Using a 'can' middleware for admin role
+        Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::post('/admin/instructors/{instructor}/approve', [AdminController::class, 'approveInstructor'])->name('admin.instructors.approve');
+        Route::post('/admin/instructors/{instructor}/reject', [AdminController::class, 'rejectInstructor'])->name('admin.instructors.reject');
+    });
 });
+

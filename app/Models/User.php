@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'instructor_status',
+        'experience',
+        'stripe_account_id',
+        'presentation_video_url',
     ];
 
     /**

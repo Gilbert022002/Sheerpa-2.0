@@ -112,10 +112,10 @@
                 </button>
             </div>
             <div class="flex-1 text-center md:text-left">
-                <h2 class="text-2xl font-black">Alex Rivers</h2>
+                <h2 class="text-2xl font-black">{{ auth()->user()->name }}</h2>
                 <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-2 text-text-sub-light text-sm font-medium">
-                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">mail</span> alex@example.com</span>
-                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">call</span> +33 6 12 34 56 78</span>
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">mail</span> {{ auth()->user()->email }}</span>
+                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> {{ auth()->user()->role }}</span>
                 </div>
             </div>
         </section>
