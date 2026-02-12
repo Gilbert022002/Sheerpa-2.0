@@ -6,6 +6,7 @@ use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Instructor\CourseController;
 use App\Http\Controllers\Instructor\AvailabilityController;
+use App\Http\Controllers\Instructor\CourseSlotController;
 use App\Http\Controllers\User\CourseController as UserCourseController; // Added this line
 
 // Page d'accueil, redirige vers le login pour le moment
@@ -56,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
         // Course Management
         Route::resource('courses', CourseController::class);
         Route::get('courses/{course}/details', [CourseController::class, 'show'])->name('courses.show');
+        Route::post('courses/{course}/slots', [CourseSlotController::class, 'store'])->name('courses.slots.store');
+        Route::delete('courses/slots/{courseSlot}', [CourseSlotController::class, 'destroy'])->name('courses.slots.destroy');
 
         // Availability Management
         Route::get('availabilities', [AvailabilityController::class, 'index'])->name('availabilities.index');

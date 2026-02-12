@@ -238,44 +238,80 @@
                 </div>
 
                 <div class="mt-8">
-                    <h3 class="text-lg font-medium text-text-main-light mb-4">Disponibilités de l'instructeur</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-white p-6 rounded-xl border border-border-light">
-                            <h4 class="font-bold text-text-main-light mb-4">Disponibilités récurrentes</h4>
-                            @if($course->guide->availabilities->count() > 0)
-                                <ul class="space-y-2">
-                                    @foreach($course->guide->availabilities as $availability)
-                                        <li class="flex justify-between items-center py-2 border-b border-border-light">
-                                            <span class="text-text-sub-light">{{ ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'][$availability->day_of_week] }}</span>
-                                            <span class="font-bold">{{ \Carbon\Carbon::parse($availability->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($availability->end_time)->format('H:i') }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p class="text-text-sub-light">Aucune disponibilité récurrente définie</p>
-                            @endif
-                        </div>
-                        
-                        <div class="bg-white p-6 rounded-xl border border-border-light">
-                            <h4 class="font-bold text-text-main-light mb-4">Créneaux ponctuels</h4>
-                            @if($course->guide->oneTimeSlots->count() > 0)
-                                <ul class="space-y-2">
-                                    @foreach($course->guide->oneTimeSlots as $slot)
-                                        <li class="flex justify-between items-center py-2 border-b border-border-light">
-                                            <span class="text-text-sub-light">{{ \Carbon\Carbon::parse($slot->start_datetime)->format('d/m/Y') }}</span>
-                                            <span class="font-bold">{{ \Carbon\Carbon::parse($slot->start_datetime)->format('H:i') }} - {{ \Carbon\Carbon::parse($slot->end_datetime)->format('H:i') }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p class="text-text-sub-light">Aucun créneau ponctuel défini</p>
-                            @endif
-                        </div>
+                    <h3 class="text-lg font-medium text-text-main-light mb-4">Créneaux horaires du cours</h3>
+                    <div class="bg-white p-6 rounded-xl border border-border-light">
+                        <h4 class="font-bold text-text-main-light mb-4">Ajouter un nouveau créneau</h4>
+                        <form method="POST" action="{{ route('instructor.courses.slots.store', $course) }}" class="space-y-6">
+                            @csrf
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Start Date Time -->
+                                <div>
+                                    <label for="start_datetime" class="block text-sm font-medium text-text-main-light mb-2">Date et heure de début</label>
+                                    <input type="datetime-local" name="start_datetime" id="start_datetime" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                                    @error('start_datetime')
+                                        <p class="text-secondary text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <!-- End Date Time -->
+                                <div>
+                                    <label for="end_datetime" class="block text-sm font-medium text-text-main-light mb-2">Date et heure de fin</label>
+                                    <input type="datetime-local" name="end_datetime" id="end_datetime" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                                    @error('end_datetime')
+                                        <p class="text-secondary text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-end mt-4">
+                                <button type="submit" class="px-6 py-3 bg-secondary text-white rounded-xl font-bold hover:opacity-90 transition-all">
+                                    Ajouter le créneau
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="mt-4 text-center">
-                        <a href="{{ route('instructor.availabilities.index') }}" class="inline-block px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all">
-                            Gérer les disponibilités
-                        </a>
+
+                    <div class="mt-6 bg-white p-6 rounded-xl border border-border-light">
+                        <h4 class="font-bold text-text-main-light mb-4">Créneaux existants</h4>
+                        @if($course->courseSlots->count() > 0)
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-slate-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Date/Heure de début</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Date/Heure de fin</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Statut</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach($course->courseSlots as $slot)
+                                            <tr class="hover:bg-slate-50">
+                                                <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ \Carbon\Carbon::parse($slot->start_datetime)->format('d/m/Y H:i') }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ \Carbon\Carbon::parse($slot->end_datetime)->format('d/m/Y H:i') }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $slot->is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                        {{ $slot->is_available ? 'Disponible' : 'Indisponible' }}
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <form action="{{ route('instructor.courses.slots.destroy', $slot) }}" method="POST" class="inline-block">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="px-4 py-2 bg-red-100 text-secondary rounded-lg font-bold hover:bg-red-200 transition-all" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce créneau ?')">
+                                                            Supprimer
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @else
+                            <p class="text-text-sub-light">Aucun créneau horaire défini pour ce cours.</p>
+                        @endif
                     </div>
                 </div>
             </div>

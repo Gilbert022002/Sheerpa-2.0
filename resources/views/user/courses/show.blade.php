@@ -103,27 +103,31 @@
                 </div>
 
                 <div class="mb-8">
-                    <h2 class="text-xl font-black text-text-main-light mb-4">Réserver un créneau</h2>
-                    <p class="text-text-sub-light mb-4">Sélectionnez une date et une heure pour réserver ce cours.</p>
+                    <h2 class="text-xl font-black text-text-main-light mb-4">Créneaux disponibles</h2>
+                    <p class="text-text-sub-light mb-4">Voici les créneaux horaires disponibles pour ce cours. Cliquez sur "Réserver" pour le créneau qui vous convient.</p>
 
-                    <form method="POST" action="{{ route('user.courses.book', $course) }}">
-                        @csrf
-                        <div class="mb-6">
-                            <label for="start_datetime" class="block text-sm font-medium text-text-main-light mb-2">Date et heure du rendez-vous</label>
-                            <input type="datetime-local" name="start_datetime" id="start_datetime" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
-                            @error('start_datetime')
-                                <p class="text-secondary text-xs mt-1">{{ $message }}</p>
-                            @enderror
+                    @if(count($availableSlots) > 0)
+                        <div class="space-y-4">
+                            @foreach($availableSlots as $slot)
+                                <div class="flex items-center justify-between p-4 bg-white rounded-xl border border-border-light">
+                                    <div>
+                                        <p class="font-bold text-text-main-light">{{ \Carbon\Carbon::parse($slot->start_datetime)->format('d/m/Y H:i') }} - {{ \Carbon\Carbon::parse($slot->end_datetime)->format('H:i') }}</p>
+                                    </div>
+                                    <form method="POST" action="{{ route('user.courses.book', $course) }}">
+                                        @csrf
+                                        <input type="hidden" name="start_datetime" value="{{ $slot->start_datetime }}">
+                                        <button type="submit" class="px-4 py-2 bg-secondary text-white rounded-lg font-bold hover:opacity-90 transition-all">
+                                            Réserver
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
                         </div>
-                        <button type="submit" class="px-6 py-3 bg-secondary text-white rounded-xl font-bold hover:opacity-90 transition-all">
-                            Réserver maintenant
-                        </button>
-                    </form>
-                </div>
-
-                <div>
-                    <h2 class="text-xl font-black text-text-main-light mb-4">Disponibilités de l'instructeur</h2>
-                    <div id="calendar" class="bg-white p-4 rounded-xl border border-border-light"></div>
+                    @else
+                        <div class="p-6 bg-white rounded-xl border border-border-light text-center">
+                            <p class="text-text-sub-light">Aucun créneau disponible pour le moment.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </main>
@@ -157,8 +161,8 @@
                     @foreach($availableSlots as $slot)
                     {
                         title: 'Créneau disponible',
-                        start: '{{ $slot->toISOString() }}',
-                        end: '{{ $slot->addMinutes($course->duration)->toISOString() }}',
+                        start: '{{ \Carbon\Carbon::parse($slot->start_datetime)->toISOString() }}',
+                        end: '{{ \Carbon\Carbon::parse($slot->end_datetime)->toISOString() }}',
                         backgroundColor: '#48bb78', // Green color for available slots
                         borderColor: '#38a169'
                     },

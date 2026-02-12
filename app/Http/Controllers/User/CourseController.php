@@ -42,9 +42,8 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        // Get available slots for this course's guide
-        // This now includes both recurring availabilities and one-time slots
-        $availableSlots = $this->availabilityService->getAvailableSlots($course->guide, $course->duration, 30); // 30 days
+        // Get available slots for this specific course
+        $availableSlots = $this->availabilityService->getAvailableSlotsForCourse($course);
 
         return view('user.courses.show', compact('course', 'availableSlots'));
     }
@@ -61,13 +60,19 @@ class CourseController extends Controller
         $guide = $course->guide;
         $user = Auth::user();
         $start_datetime = \Carbon\Carbon::parse($request->start_datetime);
-        $end_datetime = $start_datetime->copy()->addMinutes($course->duration);
+        
+        // Find the exact slot to get the correct end time
+        $selectedSlot = $course->courseSlots()
+            ->where('start_datetime', $start_datetime->format('Y-m-d H:i:s'))
+            ->firstOrFail();
+        
+        $end_datetime = \Carbon\Carbon::parse($selectedSlot->end_datetime);
 
         // Prevent double booking at the database level using transaction
         try {
             DB::transaction(function () use ($course, $guide, $user, $start_datetime, $end_datetime) {
                 // Verify that the slot is still available and not already booked
-                $this->bookingService->verifySlotAvailability($course, $guide, $start_datetime, $end_datetime);
+                $this->bookingService->verifySlotAvailability($course, $start_datetime, $end_datetime);
 
                 // Create booking with pending payment status
                 $booking = Booking::create([
@@ -109,15 +114,15 @@ class CourseController extends Controller
                     $booking->save();
                 }
 
-                // Mark any corresponding one-time slot as unavailable
-                $oneTimeSlot = $guide->oneTimeSlots()
-                    ->where('start_datetime', $start_datetime)
-                    ->where('end_datetime', $end_datetime)
+                // Mark the corresponding course slot as unavailable
+                $courseSlot = $course->courseSlots()
+                    ->where('start_datetime', $start_datetime->format('Y-m-d H:i:s'))
+                    ->where('end_datetime', $end_datetime->format('Y-m-d H:i:s'))
                     ->first();
                 
-                if ($oneTimeSlot) {
-                    $oneTimeSlot->is_available = false;
-                    $oneTimeSlot->save();
+                if ($courseSlot) {
+                    $courseSlot->is_available = false;
+                    $courseSlot->save();
                 }
             });
         } catch (\Exception $e) {

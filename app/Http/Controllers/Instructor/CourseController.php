@@ -90,8 +90,8 @@ class CourseController extends Controller
             return \Carbon\Carbon::parse($booking->start_datetime)->isPast();
         })->sortByDesc('start_datetime');
 
-        // Load the course with its guide and their availabilities
-        $course = $course->load(['guide.availabilities', 'guide.oneTimeSlots']);
+        // Load the course with its guide and course slots
+        $course = $course->load(['guide', 'courseSlots']);
 
         return view('instructor.courses.show', compact(
             'course', 

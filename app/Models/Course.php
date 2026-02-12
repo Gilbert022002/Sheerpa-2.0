@@ -41,4 +41,12 @@ class Course extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    /**
+     * Get the time slots for the course.
+     */
+    public function courseSlots()
+    {
+        return $this->hasMany(CourseSlot::class);
+    }
 }
