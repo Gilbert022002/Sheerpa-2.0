@@ -50,4 +50,44 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the courses for the user (if they are an instructor).
+     */
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'guide_id');
+    }
+
+    /**
+     * Get the availabilities for the user (if they are an instructor).
+     */
+    public function availabilities()
+    {
+        return $this->hasMany(Availability::class, 'guide_id');
+    }
+
+    /**
+     * Get the one-time slots for the user (if they are an instructor).
+     */
+    public function oneTimeSlots()
+    {
+        return $this->hasMany(OneTimeSlot::class, 'guide_id');
+    }
+
+    /**
+     * Get the bookings made by the user (as a student).
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'user_id');
+    }
+
+    /**
+     * Get the bookings received by the user (as a guide/instructor).
+     */
+    public function receivedBookings()
+    {
+        return $this->hasMany(Booking::class, 'guide_id');
+    }
 }

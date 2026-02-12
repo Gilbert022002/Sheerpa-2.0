@@ -72,10 +72,16 @@
 <div class="flex flex-1 w-full max-w-[1280px] mx-auto">
     <aside class="w-64 hidden lg:flex flex-col gap-2 p-6 border-r border-border-light">
         <nav class="flex flex-col gap-1">
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-all">
+            <a href="{{ route('instructor.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-all">
                 <span class="material-symbols-outlined">dashboard</span> Tableau de bord
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all font-medium">
+            <a href="{{ route('instructor.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all font-medium">
+                <span class="material-symbols-outlined">school</span> Mes Cours
+            </a>
+            <a href="{{ route('instructor.availabilities.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all font-medium">
+                <span class="material-symbols-outlined">event_available</span> Mes Disponibilités
+            </a>
+            <a href="{{ route('instructor.one-time-slots.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all font-medium">
                 <span class="material-symbols-outlined">video_library</span> Mes Meetings
             </a>
             <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all font-medium">
@@ -111,10 +117,10 @@
                         <h2 class="text-2xl font-black text-text-main-light">Bonjour, {{ auth()->user()->name }} 👋</h2>
                         <p class="text-text-sub-light font-medium">Voici l'activité de vos sessions aujourd'hui.</p>
                     </div>
-                    <button class="flex items-center gap-2 px-6 py-4 bg-secondary text-white rounded-2xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-all soft-shadow">
+                    <a href="{{ route('instructor.courses.create') }}" class="flex items-center gap-2 px-6 py-4 bg-secondary text-white rounded-2xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-all soft-shadow">
                         <span class="material-symbols-outlined">add_box</span>
-                        Créer un meeting
-                    </button>
+                        Créer un cours
+                    </a>
                 </section>
     
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

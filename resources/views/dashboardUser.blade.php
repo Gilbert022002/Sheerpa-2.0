@@ -84,8 +84,8 @@
             <a href="myAspirations.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
                 <span class="material-symbols-outlined">auto_awesome</span> My Aspirations
             </a>
-            <a href="favoriteCourses.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
-                <span class="material-symbols-outlined">favorite</span> Favorite Courses
+            <a href="{{ route('user.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined">school</span> Parcourir les cours
             </a>
             <a href="myReservations.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
                 <span class="material-symbols-outlined">calendar_today</span> My Reservations
@@ -147,25 +147,42 @@
         </section>
 
         <section>
-            <h3 class="text-lg font-black mb-4 px-2">Favorite Courses</h3>
+            <div class="flex justify-between items-center mb-4 px-2">
+                <h3 class="text-lg font-black">Cours disponibles</h3>
+                <a href="{{ route('user.courses.index') }}" class="text-sm text-primary font-bold hover:underline">Voir tous les cours</a>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <article class="bg-card-light rounded-3xl border border-border-light overflow-hidden soft-shadow transition-transform hover:-translate-y-1">
-                    <div class="h-40 bg-slate-100 relative">
-                        <div class="absolute inset-0 flex items-center justify-center opacity-20">
-                            <span class="material-symbols-outlined text-6xl">school</span>
+                @forelse($courses ?? [] as $course)
+                    <article class="bg-card-light rounded-3xl border border-border-light overflow-hidden soft-shadow transition-transform hover:-translate-y-1">
+                        <div class="h-40 bg-slate-100 relative">
+                            <div class="absolute inset-0 flex items-center justify-center opacity-20">
+                                <span class="material-symbols-outlined text-6xl">school</span>
+                            </div>
+                            <button class="absolute top-4 right-4 bg-white p-2 rounded-full text-secondary">
+                                <span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1">favorite</span>
+                            </button>
                         </div>
-                        <button class="absolute top-4 right-4 bg-white p-2 rounded-full text-secondary">
-                            <span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1">favorite</span>
-                        </button>
-                    </div>
-                    <div class="p-5">
-                        <h4 class="font-black text-base mb-4 leading-tight">Mastering Tailwind CSS layouts</h4>
-                        <div class="flex items-center gap-3 pt-4 border-t border-border-light">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sara" class="size-8 rounded-full">
-                            <span class="text-sm font-bold text-text-sub-light">Sara Ben <span class="text-primary">• Guide</span></span>
+                        <div class="p-5">
+                            <h4 class="font-black text-base mb-2 leading-tight">{{ $course->title }}</h4>
+                            <p class="text-sm text-text-sub-light mb-4 line-clamp-2">{{ Str::limit($course->description, 80) }}</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-bold text-primary">{{ $course->price }} €</span>
+                                <span class="text-sm text-text-sub-light">{{ $course->duration }} min</span>
+                            </div>
+                            <div class="flex items-center gap-3 pt-4 border-t border-border-light mt-4">
+                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ $course->guide->id }}" class="size-8 rounded-full">
+                                <span class="text-sm font-bold text-text-sub-light">{{ $course->guide->name }} <span class="text-primary">• Guide</span></span>
+                            </div>
+                            <a href="{{ route('user.courses.show', $course) }}" class="mt-4 block px-4 py-2 bg-primary text-white rounded-xl text-center font-bold hover:bg-primary/90 transition-all text-sm">
+                                Réserver
+                            </a>
                         </div>
+                    </article>
+                @empty
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-text-sub-light">Aucun cours disponible pour le moment.</p>
                     </div>
-                </article>
+                @endforelse
             </div>
         </section>
 
