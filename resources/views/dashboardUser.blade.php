@@ -50,7 +50,7 @@
 <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light bg-card-light px-6 py-3 sticky top-0 z-50">
     <div class="flex items-center gap-8 w-full max-w-[1280px] mx-auto">
         <div class="flex items-center gap-4 text-text-main-light">
-            <img src="logo-bleu-sheerpa.png" alt="Sheerpa Logo" class="h-16 w-auto object-contain">
+            <img src="{{ asset('images/logo-bleu-sheerpa.png') }}" alt="Sheerpa Logo" class="h-16 w-auto object-contain">
         </div>
         <label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
             <div class="flex w-full flex-1 items-stretch rounded-lg h-full group">
@@ -93,9 +93,12 @@
             </a>
         </nav>
         <div class="mt-auto pt-6 border-t border-border-light">
-            <button class="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-secondary font-bold hover:bg-secondary/5 transition-all">
-                <span class="material-symbols-outlined">logout</span> Logout
-            </button>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-secondary font-bold hover:bg-secondary/5 transition-all">
+                    <span class="material-symbols-outlined">logout</span> Logout
+                </button>
+            </form>
         </div>
     </aside>
 
