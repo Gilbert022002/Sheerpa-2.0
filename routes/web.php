@@ -69,6 +69,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('one-time-slots', [\App\Http\Controllers\Instructor\OneTimeSlotController::class, 'index'])->name('one-time-slots.index');
         Route::post('one-time-slots', [\App\Http\Controllers\Instructor\OneTimeSlotController::class, 'store'])->name('one-time-slots.store');
         Route::delete('one-time-slots/{oneTimeSlot}', [\App\Http\Controllers\Instructor\OneTimeSlotController::class, 'destroy'])->name('one-time-slots.destroy');
+
+        // Meetings Management
+        Route::get('meetings', [\App\Http\Controllers\Instructor\MeetingController::class, 'index'])->name('meetings.index');
     });
 
     // User routes
@@ -76,10 +79,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('courses', [UserCourseController::class, 'index'])->name('courses.index');
         Route::get('courses/{course}', [UserCourseController::class, 'show'])->name('courses.show');
         Route::post('courses/{course}/book', [UserCourseController::class, 'book'])->name('courses.book');
-        // Placeholder for user bookings index
-        Route::get('bookings', function () {
-            // Logic to display user's bookings
-            return 'User Bookings';
-        })->name('bookings.index');
+        // User bookings index
+        Route::get('bookings', [UserCourseController::class, 'bookings'])->name('bookings.index');
     });
 });

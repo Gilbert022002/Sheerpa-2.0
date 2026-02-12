@@ -87,8 +87,8 @@
             <a href="{{ route('user.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
                 <span class="material-symbols-outlined">school</span> Parcourir les cours
             </a>
-            <a href="myReservations.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
-                <span class="material-symbols-outlined">calendar_today</span> My Reservations
+            <a href="{{ route('user.bookings.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
+                <span class="material-symbols-outlined">calendar_today</span> Mes Réservations
             </a>
             <a href="invoicesUser.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
                 <span class="material-symbols-outlined">receipt_long</span> Invoices

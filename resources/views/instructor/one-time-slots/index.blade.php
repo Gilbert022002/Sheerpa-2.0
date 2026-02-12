@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Sheerpa Guide - Créneaux Ponctuels</title>
+    <title>Sheerpa Guide - Mes Meetings</title>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
@@ -80,7 +80,7 @@
                 <a href="{{ route('instructor.availabilities.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all font-medium">
                     <span class="material-symbols-outlined">event_available</span> Mes Disponibilités
                 </a>
-                <a href="{{ route('instructor.one-time-slots.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all font-medium">
+                <a href="{{ route('instructor.meetings.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all font-medium">
                     <span class="material-symbols-outlined">video_library</span> Mes Meetings
                 </a>
                 <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all font-medium">
@@ -104,96 +104,57 @@
         </aside>
 
         <main class="flex-1 p-6 md:p-8 space-y-8 overflow-y-auto">
-            @if (session('status'))
-                <div class="bg-primary/10 text-primary px-4 py-3 rounded-xl font-bold">
-                    {{ session('status') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="bg-red-100 text-red-700 px-4 py-3 rounded-xl font-bold mb-4">
-                    {{ session('error') }}
-                </div>
-            @endif
-
             <div class="bg-card-light rounded-3xl p-8 soft-shadow border border-border-light">
                 <div class="mb-8">
-                    <h1 class="text-2xl font-black text-text-main-light">Créneaux Ponctuels</h1>
-                    <p class="text-text-sub-light">Gérez vos disponibilités ponctuelles pour les sessions One-to-One</p>
-                </div>
-
-                <div class="mb-12 bg-slate-50 rounded-2xl p-6 border border-border-light">
-                    <h2 class="text-lg font-bold text-text-main-light mb-4">Ajouter un nouveau créneau ponctuel</h2>
-                    <form method="POST" action="{{ route('instructor.one-time-slots.store') }}" class="space-y-6">
-                        @csrf
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Start Date Time -->
-                            <div>
-                                <label for="start_datetime" class="block text-sm font-medium text-text-main-light mb-2">Date et heure de début</label>
-                                <input type="datetime-local" name="start_datetime" id="start_datetime" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" value="{{ old('start_datetime') }}" required>
-                                @error('start_datetime')
-                                    <p class="text-secondary text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <!-- End Date Time -->
-                            <div>
-                                <label for="end_datetime" class="block text-sm font-medium text-text-main-light mb-2">Date et heure de fin</label>
-                                <input type="datetime-local" name="end_datetime" id="end_datetime" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" value="{{ old('end_datetime') }}" required>
-                                @error('end_datetime')
-                                    <p class="text-secondary text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-end mt-4">
-                            <button type="submit" class="px-6 py-3 bg-secondary text-white rounded-xl font-bold hover:opacity-90 transition-all">
-                                Ajouter le créneau ponctuel
-                            </button>
-                        </div>
-                    </form>
+                    <h1 class="text-2xl font-black text-text-main-light">Mes Meetings</h1>
+                    <p class="text-text-sub-light">Gérez vos sessions de coaching avec les utilisateurs</p>
                 </div>
 
                 <div>
-                    <h2 class="text-lg font-bold text-text-main-light mb-4">Créneaux ponctuels actuels</h2>
+                    <h2 class="text-lg font-bold text-text-main-light mb-4">Sessions à venir</h2>
                     <div class="overflow-x-auto rounded-2xl border border-border-light">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-slate-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Date de début</th>
-                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Date de fin</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Utilisateur</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Cours</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Date/Heure</th>
                                     <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Statut</th>
                                     <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($oneTimeSlots as $oneTimeSlot)
-                                    <tr class="hover:bg-slate-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ \Carbon\Carbon::parse($oneTimeSlot->start_datetime)->format('d/m/Y H:i') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ \Carbon\Carbon::parse($oneTimeSlot->end_datetime)->format('d/m/Y H:i') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $oneTimeSlot->is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                                {{ $oneTimeSlot->is_available ? 'Disponible' : 'Indisponible' }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <form action="{{ route('instructor.one-time-slots.destroy', $oneTimeSlot) }}" method="POST" class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="px-4 py-2 bg-red-100 text-secondary rounded-lg font-bold hover:bg-red-200 transition-all" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce créneau ponctuel ?')">
-                                                    Supprimer
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                    @foreach ($oneTimeSlot->course->bookings as $booking)
+                                        @if ($booking->status === 'confirmed' && \Carbon\Carbon::parse($booking->start_datetime)->isFuture())
+                                        <tr class="hover:bg-slate-50">
+                                            <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->user->name }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->course->title }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ \Carbon\Carbon::parse($booking->start_datetime)->format('d/m/Y H:i') }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    Confirmé
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                @if($booking->meeting_link)
+                                                    <a href="{{ $booking->meeting_link }}" target="_blank" class="px-4 py-2 bg-primary text-white rounded-lg font-bold hover:bg-primary/90 transition-all">
+                                                        Lancer le meeting
+                                                    </a>
+                                                @else
+                                                    <span class="text-text-sub-light">Lien non disponible</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endif
+                                    @endforeach
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="px-6 py-12 text-center text-text-sub-light">
+                                        <td colspan="5" class="px-6 py-12 text-center text-text-sub-light">
                                             <div class="flex flex-col items-center justify-center">
-                                                <span class="material-symbols-outlined text-4xl text-slate-300 mb-4">event_available</span>
-                                                <p class="text-lg font-bold">Aucun créneau ponctuel défini</p>
-                                                <p class="mt-2">Ajoutez votre premier créneau pour les sessions One-to-One</p>
+                                                <span class="material-symbols-outlined text-4xl text-slate-300 mb-4">video_library</span>
+                                                <p class="text-lg font-bold">Aucun meeting à venir</p>
+                                                <p class="mt-2">Vos prochaines sessions apparaîtront ici</p>
                                             </div>
                                         </td>
                                     </tr>

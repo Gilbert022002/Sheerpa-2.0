@@ -131,4 +131,13 @@ class CourseController extends Controller
 
         return redirect()->route('user.bookings.index')->with('status', 'Course booked successfully! Check your bookings.');
     }
+
+    /**
+     * Display the user's bookings.
+     */
+    public function bookings()
+    {
+        $bookings = auth()->user()->bookings()->with(['course', 'guide'])->get();
+        return view('user.bookings.index', compact('bookings'));
+    }
 }
