@@ -47,28 +47,30 @@
 </head>
 <body class="bg-background-light text-text-main-light min-h-screen flex flex-col">
 
-<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-light bg-card-light px-6 py-3 sticky top-0 z-50">
+<header class="flex items-center justify-between border-b border-solid border-border-light bg-card-light px-6 py-3 sticky top-0 z-50">
     <div class="flex items-center gap-8 w-full max-w-[1280px] mx-auto">
-        <div class="flex items-center gap-4 text-text-main-light">
-            <img src="{{ asset('images/logo-bleu-sheerpa.png') }}" alt="Sheerpa Logo" class="h-16 w-auto object-contain">
+        <div class="flex items-center gap-4">
+            <img src="{{ asset('images/logo-bleu-sheerpa.png') }}" alt="Sheerpa Logo" class="h-12 w-auto object-contain">
+            <span class="bg-secondary/10 text-secondary text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest">Espace Utilisateur</span>
         </div>
-        <label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
-            <div class="flex w-full flex-1 items-stretch rounded-lg h-full group">
-                <div class="text-text-sub-light flex border-none bg-background-light items-center justify-center pl-4 rounded-l-lg border-r-0">
-                    <span class="material-symbols-outlined text-[20px]">search</span>
-                </div>
-                <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none text-text-main-light focus:outline-0 focus:ring-0 border-none bg-background-light h-full placeholder:text-text-sub-light px-4 pl-2 text-sm font-normal leading-normal" placeholder="Search guides..." value=""/>
-            </div>
-        </label>
         <div class="flex flex-1 justify-end gap-6 items-center">
             <div class="hidden md:flex items-center gap-6">
-                <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Become a Sheerpa</a>
-                <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Find a Guide</a>
-                <a class="text-sm font-medium hover:text-primary transition-colors" href="#">Log In</a>
+                <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Explorer</a>
+                <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Aide</a>
             </div>
-            <button class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-9 px-5 bg-primary hover:opacity-90 transition-opacity text-white text-sm font-bold leading-normal tracking-[0.015em]">
-                <span class="truncate">Sign Up</span>
-            </button>
+            <div class="flex items-center gap-3 pl-6 border-l border-border-light">
+                <div class="text-right hidden sm:block">
+                    <p class="text-xs font-black">{{ auth()->user()->name }}</p>
+                    <p class="text-[10px] text-text-sub-light font-bold">{{ auth()->user()->role }}</p>
+                </div>
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ auth()->user()->id }}" class="size-10 rounded-full bg-primary/5 object-cover" alt="Profile">
+            </div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="flex items-center justify-center overflow-hidden rounded-lg h-9 px-5 bg-primary hover:opacity-90 transition-opacity text-white text-sm font-bold leading-normal tracking-[0.015em]">
+                    <span class="truncate">Déconnexion</span>
+                </button>
+            </form>
         </div>
     </div>
 </header>
