@@ -54,11 +54,13 @@ class CourseSlotController extends Controller
             return back()->with('error', 'Ce créneau chevauche une réservation existante.');
         }
 
-        $course->courseSlots()->create([
+        $courseSlot = $course->courseSlots()->create([
             'start_datetime' => $start_datetime,
             'end_datetime' => $end_datetime,
             'is_available' => true,
         ]);
+
+        \Log::info('New course slot created:', ['slot_id' => $courseSlot->id, 'course_id' => $course->id]);
 
         return redirect()->route('instructor.courses.show', $course)->with('status', 'Créneau horaire ajouté avec succès !');
     }
