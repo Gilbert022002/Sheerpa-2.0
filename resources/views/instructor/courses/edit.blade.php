@@ -116,7 +116,7 @@
                     <p class="text-text-sub-light">Mettez à jour les détails de votre cours</p>
                 </div>
 
-                <form method="POST" action="{{ route('instructor.courses.update', $course) }}">
+                <form method="POST" action="{{ route('instructor.courses.update', $course) }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -181,13 +181,20 @@
                             @enderror
                         </div>
 
-                        <!-- Thumbnail URL -->
+                        <!-- Thumbnail Upload -->
                         <div>
-                            <label for="thumbnail_url" class="block text-sm font-medium text-text-main-light mb-2">URL de la miniature (optionnel)</label>
-                            <input type="url" name="thumbnail_url" id="thumbnail_url" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" value="{{ old('thumbnail_url', $course->thumbnail_url) }}">
-                            @error('thumbnail_url')
+                            <label for="thumbnail" class="block text-sm font-medium text-text-main-light mb-2">Miniature du cours (optionnel)</label>
+                            <input type="file" name="thumbnail" id="thumbnail" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" accept="image/*">
+                            @error('thumbnail')
                                 <p class="text-secondary text-xs mt-1">{{ $message }}</p>
                             @enderror
+                            
+                            @if($course->thumbnail)
+                                <div class="mt-2">
+                                    <p class="text-sm text-text-sub-light">Miniature actuelle:</p>
+                                    <img src="{{ asset('storage/' . $course->thumbnail) }}" alt="Current thumbnail" class="mt-1 h-24 object-cover rounded-lg">
+                                </div>
+                            @endif
                         </div>
                     </div>
 
