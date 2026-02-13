@@ -4,6 +4,7 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>@yield('title', 'Sheerpa - Plateforme')</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.png') }}">
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
@@ -50,7 +51,9 @@
     <header class="flex items-center justify-between border-b border-solid border-border-light bg-card-light px-6 py-3 sticky top-0 z-50">
         <div class="flex items-center gap-8 w-full max-w-[1280px] mx-auto">
             <div class="flex items-center gap-4">
-                <img src="{{ asset('images/logo-bleu-sheerpa.png') }}" alt="Sheerpa Logo" class="h-12 w-auto object-contain">
+                <a href="{{ route('dashboard') }}">
+                    <img src="{{ asset('images/logo-bleu-sheerpa.png') }}" alt="Sheerpa Logo" class="h-12 w-auto object-contain">
+                </a>
                 <span class="bg-primary/10 text-primary text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest">Plateforme Sheerpa</span>
             </div>
             <div class="flex flex-1 justify-end gap-6 items-center">
@@ -63,7 +66,7 @@
                         <p class="text-xs font-black">{{ auth()->user()->name }}</p>
                         <p class="text-[10px] text-text-sub-light font-bold">{{ auth()->user()->role }}</p>
                     </div>
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ auth()->user()->id }}" class="size-10 rounded-full bg-primary/5 object-cover" alt="Profile">
+                    <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) . '?v=' . filemtime(storage_path('app/public/' . auth()->user()->profile_image)) : asset('images/default/profile-default.jpg') }}" class="size-10 rounded-full bg-primary/5 object-cover" alt="Profile">
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

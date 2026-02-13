@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Instructor\CourseController;
 use App\Http\Controllers\Instructor\AvailabilityController;
 use App\Http\Controllers\Instructor\CourseSlotController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CourseController as UserCourseController; // Added this line
 
 // Page d'accueil, redirige vers le login pour le moment
@@ -72,6 +73,13 @@ Route::middleware(['auth'])->group(function () {
 
         // Meetings Management
         Route::get('meetings', [\App\Http\Controllers\Instructor\MeetingController::class, 'index'])->name('meetings.index');
+        
+        // Profile Management
+        Route::get('profile', function () {
+            return view('instructor.profile');
+        })->name('profile');
+        
+        Route::post('profile-picture', [ProfileController::class, 'updateProfilePicture'])->name('instructor.profile.update.picture');
     });
 
     // User routes
@@ -81,5 +89,20 @@ Route::middleware(['auth'])->group(function () {
         Route::post('courses/{course}/book', [UserCourseController::class, 'book'])->name('courses.book');
         // User bookings index
         Route::get('bookings', [UserCourseController::class, 'bookings'])->name('bookings.index');
+        // User aspirations
+        Route::get('aspirations', function () {
+            return view('user.aspirations');
+        })->name('aspirations');
+        // User invoices
+        Route::get('invoices', function () {
+            return view('user.invoices');
+        })->name('invoices');
+        
+        // Profile management
+        Route::get('profile', function () {
+            return view('user.profile');
+        })->name('profile');
+        
+        Route::post('profile-picture', [ProfileController::class, 'updateProfilePicture'])->name('profile.update.picture');
     });
 });

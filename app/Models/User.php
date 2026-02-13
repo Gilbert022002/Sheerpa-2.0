@@ -24,6 +24,7 @@ class User extends Authenticatable
         'role',
         'instructor_status',
         'experience',
+        'profile_image',
         'stripe_account_id',
         'presentation_video_url',
     ];

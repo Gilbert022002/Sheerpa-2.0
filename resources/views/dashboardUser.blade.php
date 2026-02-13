@@ -1,115 +1,14 @@
-<!DOCTYPE html>
-<html class="light" lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Sherpa Profile - Dashboard</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#7ec9df", // Bleu Sheerpa
-                        "secondary": "#ef5e21", // Orange Sheerpa
-                        "background-light": "#f6f6f8",
-                        "card-light": "#ffffff",
-                        "text-main-light": "#121118",
-                        "text-sub-light": "#686189",
-                        "border-light": "#f1f0f4",
-                    },
-                    fontFamily: {
-                        "display": ["Manrope", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "xl": "1rem",
-                        "2xl": "1.5rem",
-                        "3xl": "2rem"
-                    }
-                },
-            },
-        }
-    </script>
-    <style>
-        body { font-family: 'Manrope', sans-serif; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .soft-shadow {
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
-        }
-    </style>
-</head>
-<body class="bg-background-light text-text-main-light min-h-screen flex flex-col">
+@extends('layouts.user')
 
-<header class="flex items-center justify-between border-b border-solid border-border-light bg-card-light px-6 py-3 sticky top-0 z-50">
-    <div class="flex items-center gap-8 w-full max-w-[1280px] mx-auto">
-        <div class="flex items-center gap-4">
-            <img src="{{ asset('images/logo-bleu-sheerpa.png') }}" alt="Sheerpa Logo" class="h-12 w-auto object-contain">
-            <span class="bg-secondary/10 text-secondary text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest">Espace Utilisateur</span>
-        </div>
-        <div class="flex flex-1 justify-end gap-6 items-center">
-            <div class="hidden md:flex items-center gap-6">
-                <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Explorer</a>
-                <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Aide</a>
-            </div>
-            <div class="flex items-center gap-3 pl-6 border-l border-border-light">
-                <div class="text-right hidden sm:block">
-                    <p class="text-xs font-black">{{ auth()->user()->name }}</p>
-                    <p class="text-[10px] text-text-sub-light font-bold">{{ auth()->user()->role }}</p>
-                </div>
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ auth()->user()->id }}" class="size-10 rounded-full bg-primary/5 object-cover" alt="Profile">
-            </div>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="flex items-center justify-center overflow-hidden rounded-lg h-9 px-5 bg-primary hover:opacity-90 transition-opacity text-white text-sm font-bold leading-normal tracking-[0.015em]">
-                    <span class="truncate">Déconnexion</span>
-                </button>
-            </form>
-        </div>
-    </div>
-</header>
+@section('title', 'Sherpa Profile - Dashboard')
+    
+@section('content')
 
-<div class="flex flex-1 w-full max-w-[1280px] mx-auto">
-    <aside class="w-64 hidden lg:flex flex-col gap-2 p-6 border-r border-border-light">
-        <nav class="flex flex-col gap-1">
-            <a href="dashboardUser.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold">
-                <span class="material-symbols-outlined">person</span> My Profile
-            </a>
-            <a href="myAspirations.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
-                <span class="material-symbols-outlined">auto_awesome</span> My Aspirations
-            </a>
-            <a href="{{ route('user.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
-                <span class="material-symbols-outlined">school</span> Parcourir les cours
-            </a>
-            <a href="{{ route('user.bookings.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
-                <span class="material-symbols-outlined">calendar_today</span> Mes Réservations
-            </a>
-            <a href="invoicesUser.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-sub-light hover:bg-white hover:text-primary transition-all">
-                <span class="material-symbols-outlined">receipt_long</span> Invoices
-            </a>
-        </nav>
-        <div class="mt-auto pt-6 border-t border-border-light">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-secondary font-bold hover:bg-secondary/5 transition-all">
-                    <span class="material-symbols-outlined">logout</span> Logout
-                </button>
-            </form>
-        </div>
-    </aside>
 
-    <main class="flex-1 p-6 md:p-8 space-y-8 overflow-y-auto">
-        
         <section class="bg-card-light rounded-3xl p-8 soft-shadow border border-border-light flex flex-col md:flex-row items-center gap-8">
             <div class="relative">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="size-28 rounded-full bg-primary/5 object-cover" alt="Profile">
-                <button class="absolute bottom-0 right-0 bg-white p-2 rounded-full border border-border-light text-primary hover:text-secondary shadow-sm">
+                <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) . '?' . time() : asset('images/default/profile-default.jpg') }}" class="size-28 rounded-full bg-primary/5 object-cover" alt="Profile">
+                <button type="button" onclick="openProfileModal()" class="absolute bottom-0 right-0 bg-white p-2 rounded-full border border-border-light text-primary hover:text-secondary shadow-sm">
                     <span class="material-symbols-outlined text-sm">edit</span>
                 </button>
             </div>
@@ -170,7 +69,7 @@
                                 <span class="text-sm text-text-sub-light">{{ $course->duration }} min</span>
                             </div>
                             <div class="flex items-center gap-3 pt-4 border-t border-border-light mt-4">
-                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ $course->guide->id }}" class="size-8 rounded-full">
+                                <img src="{{ $course->guide->profile_image ? asset('storage/' . $course->guide->profile_image) : asset('images/default/profile-default.jpg') }}" class="size-8 rounded-full">
                                 <span class="text-sm font-bold text-text-sub-light">{{ $course->guide->name }} <span class="text-primary">• Guide</span></span>
                             </div>
                             <a href="{{ route('user.courses.show', $course) }}" class="mt-4 block px-4 py-2 bg-primary text-white rounded-xl text-center font-bold hover:bg-primary/90 transition-all text-sm">
@@ -245,12 +144,47 @@
                 </button>
             </div>
         </section>
+@endsection
 
-    </main>
-</div>
+@section('scripts')
+    <!-- Modal pour la mise à jour de la photo de profil -->
+    <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 relative">
+            <h3 class="text-xl font-bold text-text-main-light mb-4">Mettre à jour la photo de profil</h3>
+            
+            <form id="profileImageForm" method="POST" action="{{ route('user.profile.update.picture') }}" enctype="multipart/form-data">
+                @csrf
+                @method('POST')
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-text-main-light mb-2">Choisissez une nouvelle photo</label>
+                    <input type="file" name="profile_image" accept="image/*" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                </div>
+                
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" onclick="closeProfileModal(event)" class="px-4 py-2 border border-border-light text-text-main-light rounded-lg font-bold hover:bg-slate-50 transition-all">
+                        Annuler
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-secondary text-white rounded-lg font-bold hover:opacity-90 transition-all">
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+            
+            <button type="button" onclick="closeProfileModal(event)" class="absolute top-4 right-4 text-text-sub-light hover:text-text-main-light">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+    </div>
 
-<script>
-    // Would you like me to add real search functionality or dynamic course cards?
-</script>
-</body>
-</html>
+    <script>
+        function openProfileModal() {
+            document.getElementById('profileModal').classList.remove('hidden');
+        }
+        
+        function closeProfileModal(e) {
+            e.stopPropagation();
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+    </script>
+@endsection
