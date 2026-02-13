@@ -41,7 +41,16 @@ Route::middleware(['auth'])->group(function () {
         if (auth()->user()->role !== 'instructor') {
             return redirect()->route('dashboard');
         }
-        return view('instructeur dashboard');
+        
+        // Récupérer les prochaines sessions de l'instructeur
+        $upcomingSessions = \App\Models\Booking::where('guide_id', auth()->id())
+            ->where('status', 'confirmed')
+            ->where('start_datetime', '>', now())
+            ->orderBy('start_datetime', 'asc')
+            ->with(['course', 'course.bookings'])
+            ->get();
+        
+        return view('instructeur dashboard', compact('upcomingSessions'));
     })->name('instructor.dashboard');
 
     Route::post('/instructor/details', [InstructorController::class, 'storeDetails'])->name('instructor.storeDetails');

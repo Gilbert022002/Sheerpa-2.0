@@ -15,8 +15,15 @@ class OneTimeSlotController extends Controller
      */
     public function index()
     {
-        $oneTimeSlots = Auth::user()->oneTimeSlots()->orderBy('start_datetime')->get();
-        return view('instructor.one-time-slots.index', compact('oneTimeSlots'));
+        // Récupérer les bookings confirmés de l'instructeur avec les relations nécessaires
+        $bookings = Auth::user()->receivedBookings()
+            ->where('status', 'confirmed')
+            ->where('start_datetime', '>', now())
+            ->with(['user', 'course'])
+            ->orderBy('start_datetime')
+            ->get();
+        
+        return view('instructor.one-time-slots.index', compact('bookings'));
     }
 
     /**

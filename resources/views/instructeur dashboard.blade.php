@@ -73,36 +73,49 @@
                             <span class="size-2 bg-secondary rounded-full animate-pulse"></span>
                             Prochaine Session en Direct
                         </h3>
-                        <div class="bg-card-light p-8 rounded-3xl border border-primary/20 bg-gradient-to-br from-white to-primary/5 soft-shadow relative overflow-hidden group">
-                            <div class="relative z-10">
-                                <div class="flex items-center gap-3 mb-6">
-                                    <span class="px-3 py-1 bg-white border border-border-light text-secondary text-[10px] font-black rounded-full uppercase tracking-tighter shadow-sm">
-                                        Demain • 14:00 (60 min)
-                                    </span>
-                                </div>
-                                <h4 class="text-2xl font-black mt-2 mb-3 leading-tight">Architecture logicielle : <br/>Maîtriser le pattern MVC avec Laravel</h4>
-                                <div class="flex items-center gap-4 text-text-sub-light mb-8">
-                                    <span class="flex items-center gap-1 text-xs font-bold">
-                                        <span class="material-symbols-outlined text-sm">group</span> 12 inscrits
-                                    </span>
-                                    <span class="flex items-center gap-1 text-xs font-bold">
-                                        <span class="material-symbols-outlined text-sm">layers</span> Niveau Intermédiaire
-                                    </span>
-                                </div>
+                        @if($upcomingSessions->count() > 0)
+                            @foreach($upcomingSessions as $session)
+                            <div class="bg-card-light p-8 rounded-3xl border border-primary/20 bg-gradient-to-br from-white to-primary/5 soft-shadow relative overflow-hidden group">
+                                <div class="relative z-10">
+                                    <div class="flex items-center gap-3 mb-6">
+                                        <span class="px-3 py-1 bg-white border border-border-light text-secondary text-[10px] font-black rounded-full uppercase tracking-tighter shadow-sm">
+                                            {{ \Carbon\Carbon::parse($session->start_datetime)->isoFormat('dddd D MMMM YYYY') }} • {{ \Carbon\Carbon::parse($session->start_datetime)->format('H:i') }} ({{ \Carbon\Carbon::parse($session->end_datetime)->diffInMinutes(\Carbon\Carbon::parse($session->start_datetime)) }} min)
+                                        </span>
+                                    </div>
+                                    <h4 class="text-2xl font-black mt-2 mb-3 leading-tight">{{ $session->course->title }}</h4>
+                                    <div class="flex items-center gap-4 text-text-sub-light mb-8">
+                                        <span class="flex items-center gap-1 text-xs font-bold">
+                                            <span class="material-symbols-outlined text-sm">group</span> {{ $session->course->bookings->where('status', 'confirmed')->count() }} inscrits
+                                        </span>
+                                        <span class="flex items-center gap-1 text-xs font-bold">
+                                            <span class="material-symbols-outlined text-sm">layers</span> {{ $session->course->level ?: 'Niveau Intermédiaire' }}
+                                        </span>
+                                    </div>
 
-                                <div class="flex flex-wrap gap-4">
-                                    <button class="px-8 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center gap-2">
-                                        <span class="material-symbols-outlined">videocam</span> Lancer le meeting
-                                    </button>
-                                    <button class="px-6 py-3 bg-white border border-border-light text-text-main-light rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors">
-                                        Gérer les ressources
-                                    </button>
+                                    <div class="flex flex-wrap gap-4">
+                                        <a href="{{ $session->meeting_link ?: '#' }}" target="_blank" class="px-8 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center gap-2">
+                                            <span class="material-symbols-outlined">videocam</span> Lancer le meeting
+                                        </a>
+                                        <a href="{{ route('instructor.courses.show', $session->course) }}" class="px-6 py-3 bg-white border border-border-light text-text-main-light rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors">
+                                            Gérer les ressources
+                                        </a>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined absolute -right-6 -bottom-6 text-[180px] text-primary/10 group-hover:scale-110 transition-transform duration-500">
+                                    cast_for_education
+                                </span>
+                            </div>
+                            @break
+                            @endforeach
+                        @else
+                            <div class="bg-card-light p-8 rounded-3xl border border-border-light soft-shadow relative overflow-hidden">
+                                <div class="relative z-10 text-center py-8">
+                                    <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">event_busy</span>
+                                    <h4 class="text-xl font-bold text-text-main-light mb-2">Aucune session à venir</h4>
+                                    <p class="text-text-sub-light">Vos prochaines sessions apparaîtront ici</p>
                                 </div>
                             </div>
-                            <span class="material-symbols-outlined absolute -right-6 -bottom-6 text-[180px] text-primary/10 group-hover:scale-110 transition-transform duration-500">
-                                cast_for_education
-                            </span>
-                        </div>
+                        @endif
                     </section>
 
                     <section class="space-y-4">
