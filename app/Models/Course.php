@@ -23,7 +23,7 @@ class Course extends Model
         'duration',
         'level',
         'category',
-        'thumbnail_url',
+        'thumbnail',
     ];
 
     /**

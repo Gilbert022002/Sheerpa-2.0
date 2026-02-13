@@ -83,6 +83,13 @@
 
             <div class="bg-card-light rounded-3xl p-8 soft-shadow border border-border-light">
                 <div class="mb-8">
+                    @if($course->thumbnail)
+                        <img src="{{ asset('storage/' . $course->thumbnail) }}" alt="Thumbnail" class="w-full h-64 object-cover rounded-xl mb-6">
+                    @else
+                        <div class="bg-slate-200 border-2 border-dashed rounded-xl w-full h-64 flex items-center justify-center mb-6">
+                            <span class="text-slate-500 text-lg">Aucune miniature</span>
+                        </div>
+                    @endif
                     <h1 class="text-2xl font-black text-text-main-light">{{ $course->title }}</h1>
                     <p class="text-text-sub-light">{{ $course->description }}</p>
                 </div>

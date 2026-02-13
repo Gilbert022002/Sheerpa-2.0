@@ -45,10 +45,53 @@ class CourseController extends Controller
             'duration' => ['required', 'integer', 'min:1'], // in minutes
             'level' => ['required', 'string', Rule::in(['débutant', 'intermédiaire', 'avancé'])],
             'category' => ['required', 'string', 'max:255'],
-            'thumbnail_url' => ['nullable', 'url', 'max:255'],
+            'thumbnail' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,gif', 'max:2048'], // Allowed formats, Max 2MB
+            'course_slots' => ['required', 'array', 'min:1'],
+            'course_slots.*.date' => ['required', 'date', 'after_or_equal:today'],
+            'course_slots.*.start_time' => ['required', 'date_format:H:i'],
+            'course_slots.*.end_time' => ['required', 'date_format:H:i'],
         ]);
 
-        Auth::user()->courses()->create($request->all());
+        // Custom validation for time slots
+        if ($request->has('course_slots')) {
+            foreach ($request->course_slots as $index => $slot) {
+                if (!empty($slot['date']) && !empty($slot['start_time']) && !empty($slot['end_time'])) {
+                    $startDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $slot['date'] . ' ' . $slot['start_time']);
+                    $endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $slot['date'] . ' ' . $slot['end_time']);
+
+                    if ($startDateTime >= $endDateTime) {
+                        return redirect()->back()
+                            ->withErrors(['course_slots.' . $index . '.end_time' => 'L\'heure de fin doit être postérieure à l\'heure de début.'])
+                            ->withInput();
+                    }
+                }
+            }
+        }
+
+        $courseData = $request->except(['thumbnail', 'course_slots']);
+
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', 'public');
+            $courseData['thumbnail'] = $thumbnailPath;
+        }
+
+        $course = Auth::user()->courses()->create($courseData);
+
+        // Process course slots if provided
+        if ($request->has('course_slots')) {
+            foreach ($request->course_slots as $slot) {
+                if (!empty($slot['date']) && !empty($slot['start_time']) && !empty($slot['end_time'])) {
+                    $startDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $slot['date'] . ' ' . $slot['start_time']);
+                    $endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $slot['date'] . ' ' . $slot['end_time']);
+                    
+                    $course->courseSlots()->create([
+                        'start_datetime' => $startDateTime,
+                        'end_datetime' => $endDateTime,
+                        'is_available' => true,
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('instructor.courses.index')->with('status', 'Course created successfully!');
     }
@@ -119,10 +162,22 @@ class CourseController extends Controller
             'duration' => ['required', 'integer', 'min:1'], // in minutes
             'level' => ['required', 'string', Rule::in(['débutant', 'intermédiaire', 'avancé'])],
             'category' => ['required', 'string', 'max:255'],
-            'thumbnail_url' => ['nullable', 'url', 'max:255'],
+            'thumbnail' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,gif', 'max:2048'], // Allowed formats, Max 2MB
         ]);
 
-        $course->update($request->all());
+        $courseData = $request->except('thumbnail');
+        
+        if ($request->hasFile('thumbnail')) {
+            // Delete old thumbnail if exists
+            if ($course->thumbnail) {
+                \Storage::disk('public')->delete($course->thumbnail);
+            }
+            
+            $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', 'public');
+            $courseData['thumbnail'] = $thumbnailPath;
+        }
+
+        $course->update($courseData);
 
         return redirect()->route('instructor.courses.index')->with('status', 'Course updated successfully!');
     }

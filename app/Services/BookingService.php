@@ -62,4 +62,62 @@ class BookingService
         // Additional checks could go here before creating the booking
         return Booking::create($data);
     }
+
+    /**
+     * Check if a time slot is available for a specific guide.
+     *
+     * @param int $guideId The ID of the guide.
+     * @param Carbon $startDateTime The start datetime of the slot.
+     * @param Carbon $endDateTime The end datetime of the slot.
+     * @return bool True if the slot is available, false otherwise.
+     */
+    public function isTimeSlotAvailable(int $guideId, Carbon $startDateTime, Carbon $endDateTime): bool
+    {
+        // Check if there's already a booking for this guide that overlaps with the requested time
+        $existingBooking = Booking::where('guide_id', $guideId)
+            ->where(function ($query) use ($startDateTime, $endDateTime) {
+                $query->where(function ($q) use ($startDateTime, $endDateTime) {
+                    $q->where('start_datetime', '<', $endDateTime)
+                      ->where('start_datetime', '>=', $startDateTime);
+                })
+                ->orWhere(function ($q) use ($startDateTime, $endDateTime) {
+                    $q->where('end_datetime', '>', $startDateTime)
+                      ->where('end_datetime', '<=', $endDateTime);
+                })
+                ->orWhere(function ($q) use ($startDateTime, $endDateTime) {
+                    $q->where('start_datetime', '<=', $startDateTime)
+                      ->where('end_datetime', '>=', $endDateTime);
+                });
+            })
+            ->exists();
+
+        if ($existingBooking) {
+            return false;
+        }
+
+        // Check if there's a one-time slot that's not available and overlaps with the requested time
+        $oneTimeSlot = \App\Models\OneTimeSlot::where('guide_id', $guideId)
+            ->where(function ($query) use ($startDateTime, $endDateTime) {
+                $query->where(function ($q) use ($startDateTime, $endDateTime) {
+                    $q->where('start_datetime', '<', $endDateTime)
+                      ->where('start_datetime', '>=', $startDateTime);
+                })
+                ->orWhere(function ($q) use ($startDateTime, $endDateTime) {
+                    $q->where('end_datetime', '>', $startDateTime)
+                      ->where('end_datetime', '<=', $endDateTime);
+                })
+                ->orWhere(function ($q) use ($startDateTime, $endDateTime) {
+                    $q->where('start_datetime', '<=', $startDateTime)
+                      ->where('end_datetime', '>=', $endDateTime);
+                });
+            })
+            ->where('is_available', false) // Slot is marked as not available
+            ->exists();
+
+        if ($oneTimeSlot) {
+            return false;
+        }
+
+        return true;
+    }
 }

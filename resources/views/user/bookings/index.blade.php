@@ -26,7 +26,13 @@
                                 @forelse ($bookings as $booking)
                                     @if ($booking->status === 'confirmed' && \Carbon\Carbon::parse($booking->start_datetime)->isFuture())
                                     <tr class="hover:bg-slate-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->course->title }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">
+                                            @if($booking->course)
+                                                {{ $booking->course->title }}
+                                            @else
+                                                Session individuelle
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->guide->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ \Carbon\Carbon::parse($booking->start_datetime)->format('d/m/Y H:i') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -71,19 +77,35 @@
                                     <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Instructeur</th>
                                     <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Date/Heure</th>
                                     <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Statut</th>
+                                    <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse ($bookings as $booking)
                                     @if ($booking->status === 'confirmed' && \Carbon\Carbon::parse($booking->start_datetime)->isPast())
                                     <tr class="hover:bg-slate-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->course->title }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">
+                                            @if($booking->course)
+                                                {{ $booking->course->title }}
+                                            @else
+                                                Session individuelle
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->guide->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ \Carbon\Carbon::parse($booking->start_datetime)->format('d/m/Y H:i') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
                                                 Terminé
                                             </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            @if($booking->meeting_link)
+                                                <a href="{{ $booking->meeting_link }}" target="_blank" class="px-4 py-2 bg-primary text-white rounded-lg font-bold hover:bg-primary/90 transition-all">
+                                                    Rejoindre le meeting
+                                                </a>
+                                            @else
+                                                <span class="text-text-sub-light">Lien non disponible</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endif

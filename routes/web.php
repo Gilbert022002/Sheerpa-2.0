@@ -81,5 +81,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('courses/{course}/book', [UserCourseController::class, 'book'])->name('courses.book');
         // User bookings index
         Route::get('bookings', [UserCourseController::class, 'bookings'])->name('bookings.index');
+
+        // One-to-one booking routes
+        Route::get('bookings/one-to-one', [\App\Http\Controllers\User\OneToOneBookingController::class, 'index'])->name('bookings.one-to-one.index');
+        Route::post('bookings/one-to-one', [\App\Http\Controllers\User\OneToOneBookingController::class, 'createBooking'])->name('bookings.one-to-one.create');
+        Route::get('api/available-slots/{guideId}/{date}', [\App\Http\Controllers\User\OneToOneBookingController::class, 'getAvailableSlots'])->name('api.available-slots');
     });
 });

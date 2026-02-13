@@ -128,6 +128,7 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-slate-50">
                             <tr>
+                                <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Miniature</th>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Titre</th>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Prix</th>
                                 <th scope="col" class="px-6 py-4 text-left text-xs font-bold text-text-sub-light uppercase tracking-wider">Durée (min)</th>
@@ -138,6 +139,15 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse ($courses as $course)
                                 <tr class="hover:bg-slate-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if($course->thumbnail)
+                                            <img src="{{ asset('storage/' . $course->thumbnail) }}" alt="Thumbnail" class="h-16 w-16 object-cover rounded-lg">
+                                        @else
+                                            <div class="bg-slate-200 border-2 border-dashed rounded-xl w-16 h-16 flex items-center justify-center">
+                                                <span class="text-slate-500 text-xs">Aucune</span>
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="font-bold text-text-main-light">{{ $course->title }}</div>
                                         <div class="text-sm text-text-sub-light">{{ Str::limit($course->description, 60) }}</div>

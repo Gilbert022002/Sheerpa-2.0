@@ -90,6 +90,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @forelse ($courses as $course)
                         <div class="bg-white p-6 rounded-2xl border border-border-light soft-shadow flex flex-col h-full">
+                            @if($course->thumbnail)
+                                <img src="{{ asset('storage/' . $course->thumbnail) }}" alt="Thumbnail" class="w-full h-40 object-cover rounded-xl mb-4">
+                            @else
+                                <div class="bg-slate-200 border-2 border-dashed rounded-xl w-full h-40 flex items-center justify-center mb-4">
+                                    <span class="text-slate-500 text-sm">Aucune miniature</span>
+                                </div>
+                            @endif
                             <h4 class="font-black text-lg mb-2 text-text-main-light">{{ $course->title }}</h4>
                             <p class="text-sm text-text-sub-light mb-4 flex-grow">{{ Str::limit($course->description, 100) }}</p>
                             <div class="flex items-center justify-between mb-4">

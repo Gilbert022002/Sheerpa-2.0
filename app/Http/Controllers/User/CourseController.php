@@ -99,19 +99,29 @@ class CourseController extends Controller
                     $booking->status = 'confirmed'; // Confirm only after payment success
                     $booking->save();
 
-                    // Create Jitsi meeting link
-                    $meetingLink = $this->meetingService->createMeetingLink($booking);
-                    $booking->meeting_link = $meetingLink;
-                    $booking->save();
+                    try {
+                        // Create Jitsi meeting link for the booking
+                        $meetingLink = $this->meetingService->createMeetingLink($booking);
+                        $booking->meeting_link = $meetingLink;
+                        $booking->save();
+                    } catch (\Exception $e) {
+                        \Log::error('Error creating meeting link: ' . $e->getMessage());
+                        // Still continue with the booking, but log the error
+                    }
                 } else {
                     $booking->payment_status = 'free'; // For free courses
                     $booking->status = 'confirmed';
                     $booking->save();
                     
-                    // Create Jitsi meeting link for free courses
-                    $meetingLink = $this->meetingService->createMeetingLink($booking);
-                    $booking->meeting_link = $meetingLink;
-                    $booking->save();
+                    try {
+                        // Create Jitsi meeting link for the booking
+                        $meetingLink = $this->meetingService->createMeetingLink($booking);
+                        $booking->meeting_link = $meetingLink;
+                        $booking->save();
+                    } catch (\Exception $e) {
+                        \Log::error('Error creating meeting link: ' . $e->getMessage());
+                        // Still continue with the booking, but log the error
+                    }
                 }
 
                 // Mark the corresponding course slot as unavailable

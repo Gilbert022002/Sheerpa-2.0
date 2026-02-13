@@ -116,7 +116,7 @@
                     <p class="text-text-sub-light">Remplissez les détails de votre nouveau cours</p>
                 </div>
 
-                <form method="POST" action="{{ route('instructor.courses.store') }}">
+                <form method="POST" action="{{ route('instructor.courses.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     <!-- Title -->
@@ -180,13 +180,59 @@
                             @enderror
                         </div>
 
-                        <!-- Thumbnail URL -->
+                        <!-- Thumbnail Upload -->
                         <div>
-                            <label for="thumbnail_url" class="block text-sm font-medium text-text-main-light mb-2">URL de la miniature (optionnel)</label>
-                            <input type="url" name="thumbnail_url" id="thumbnail_url" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" value="{{ old('thumbnail_url') }}">
-                            @error('thumbnail_url')
+                            <label for="thumbnail" class="block text-sm font-medium text-text-main-light mb-2">Miniature du cours (optionnel)</label>
+                            <input type="file" name="thumbnail" id="thumbnail" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" accept="image/*">
+                            @error('thumbnail')
                                 <p class="text-secondary text-xs mt-1">{{ $message }}</p>
                             @enderror
+                        </div>
+                    </div>
+
+                    <!-- Course Time Slots -->
+                    <div class="mb-8 bg-slate-50 rounded-2xl p-6 border border-border-light">
+                        <h3 class="text-lg font-bold text-text-main-light mb-4">Créneaux horaires du cours</h3>
+                        <p class="text-text-sub-light mb-4">Définissez les créneaux horaires disponibles pour ce cours</p>
+
+                        <div id="time-slots-container">
+                            <div class="time-slot-item grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-text-main-light mb-2">Date</label>
+                                    <input type="date" name="course_slots[0][date]" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" min="{{ \Carbon\Carbon::today()->format('Y-m-d') }}" required>
+                                    @error('course_slots.0.date')
+                                        <p class="text-secondary text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-text-main-light mb-2">Heure de début</label>
+                                    <input type="time" name="course_slots[0][start_time]" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                                    @error('course_slots.0.start_time')
+                                        <p class="text-secondary text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium text-text-main-light mb-2">Heure de fin</label>
+                                    <input type="time" name="course_slots[0][end_time]" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                                    @error('course_slots.0.end_time')
+                                        <p class="text-secondary text-xs mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                
+                                <div class="flex items-end">
+                                    <button type="button" class="remove-slot-btn px-4 py-3 bg-red-100 text-secondary rounded-lg font-bold hover:bg-red-200 transition-all" style="display: none;">
+                                        Retirer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="button" id="add-time-slot" class="px-4 py-2 bg-primary text-white rounded-lg font-bold hover:bg-primary/90 transition-all">
+                                Ajouter un créneau
+                            </button>
                         </div>
                     </div>
 
@@ -197,6 +243,77 @@
                     </div>
                 </form>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    let slotIndex = 1;
+                    
+                    document.getElementById('add-time-slot').addEventListener('click', function() {
+                        const container = document.getElementById('time-slots-container');
+                        
+                        const slotDiv = document.createElement('div');
+                        slotDiv.className = 'time-slot-item grid grid-cols-1 md:grid-cols-4 gap-4 mb-4';
+                        slotDiv.innerHTML = `
+                            <div>
+                                <label class="block text-sm font-medium text-text-main-light mb-2">Date</label>
+                                <input type="date" name="course_slots[${slotIndex}][date]" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" min="${new Date().toISOString().split('T')[0]}" required>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-text-main-light mb-2">Heure de début</label>
+                                <input type="time" name="course_slots[${slotIndex}][start_time]" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-text-main-light mb-2">Heure de fin</label>
+                                <input type="time" name="course_slots[${slotIndex}][end_time]" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                            </div>
+                            
+                            <div class="flex items-end">
+                                <button type="button" class="remove-slot-btn px-4 py-3 bg-red-100 text-secondary rounded-lg font-bold hover:bg-red-200 transition-all">
+                                    Retirer
+                                </button>
+                            </div>
+                        `;
+                        
+                        container.appendChild(slotDiv);
+                        
+                        // Add event listener to the new remove button
+                        slotDiv.querySelector('.remove-slot-btn').addEventListener('click', function() {
+                            container.removeChild(slotDiv);
+                        });
+                        
+                        slotIndex++;
+                        
+                        // Show remove buttons if we have more than one slot
+                        updateRemoveButtons();
+                    });
+                    
+                    // Add event listeners to existing remove buttons
+                    document.querySelectorAll('.remove-slot-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const slotItem = this.closest('.time-slot-item');
+                            slotItem.parentNode.removeChild(slotItem);
+                            updateRemoveButtons();
+                        });
+                    });
+                    
+                    function updateRemoveButtons() {
+                        const slots = document.querySelectorAll('.time-slot-item');
+                        slots.forEach((slot, index) => {
+                            const removeBtn = slot.querySelector('.remove-slot-btn');
+                            if (slots.length > 1) {
+                                removeBtn.style.display = 'block';
+                            } else {
+                                removeBtn.style.display = 'none';
+                            }
+                        });
+                    }
+                    
+                    // Initialize remove button visibility
+                    updateRemoveButtons();
+                });
+            </script>
         </main>
     </div>
 </body>

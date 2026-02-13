@@ -14,11 +14,6 @@ Objectif principal :
 
 ---
 
-# ⚠️ RÈGLE ABSOLUE DE COMMUNICATION
-
-Tu dois TOUJOURS répondre en français.
-
-Toutes les explications doivent être en français.
 
 ---
 
