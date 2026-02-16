@@ -94,7 +94,7 @@
             <div class="bg-white rounded-2xl max-w-md w-full p-6 relative">
                 <h3 class="text-xl font-bold text-text-main-light mb-4">Modifier les informations du profil</h3>
 
-                <form id="profileInfoForm" method="POST" action="{{ route('profile.update.info') }}">
+                <form id="profileInfoForm" method="POST" action="{{ route('instructor.profile.update.info') }}">
                     @csrf
                     @method('POST')
 

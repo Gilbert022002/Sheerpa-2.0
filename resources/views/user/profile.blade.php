@@ -71,7 +71,7 @@
             <div class="bg-white rounded-2xl max-w-md w-full p-6 relative">
                 <h3 class="text-xl font-bold text-text-main-light mb-4">Modifier les informations du profil</h3>
 
-                <form id="profileInfoForm" method="POST" action="{{ route('profile.update.info') }}">
+                <form id="profileInfoForm" method="POST" action="{{ route('user.profile.update.info') }}">
                     @csrf
                     @method('POST')
 
@@ -116,24 +116,6 @@
             </div>
         </div>
 
-        <div class="mt-8">
-            <h3 class="font-bold text-lg mb-4">Photo de profil</h3>
-            <form method="POST" action="{{ route('user.profile.update.picture') }}" enctype="multipart/form-data">
-                @csrf
-                @method('POST')
-                <div class="flex items-center gap-6">
-                    <div class="relative">
-                        <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . auth()->user()->id }}" class="size-24 rounded-full bg-primary/5 object-cover" alt="Profile Preview">
-                    </div>
-                    <div class="flex-1">
-                        <input type="file" name="profile_image" accept="image/*" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all mb-3">
-                        <button type="submit" class="px-6 py-3 bg-secondary text-white rounded-xl font-bold hover:opacity-90 transition-all">
-                            Mettre à jour la photo
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
     </div>
 @endsection
 

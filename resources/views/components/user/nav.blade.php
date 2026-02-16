@@ -2,6 +2,9 @@
     <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('dashboard') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
         <span class="material-symbols-outlined">dashboard</span> Dashboard
     </a>
+    <a href="{{ route('user.profile') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('user.profile') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
+        <span class="material-symbols-outlined">person</span> My Profile
+    </a>
     <a href="{{ route('user.aspirations') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('user.aspirations') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
         <span class="material-symbols-outlined">auto_awesome</span> My Aspirations
     </a>
