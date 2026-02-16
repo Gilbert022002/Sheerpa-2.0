@@ -140,6 +140,9 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('profile-picture', [ProfileController::class, 'updateProfilePicture'])
                 ->name('profile.update.picture');
+                
+            Route::post('profile-info', [ProfileController::class, 'updateProfileInfo'])
+                ->name('profile.update.info');
         });
 
 
@@ -205,5 +208,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('profile-picture',
                 [ProfileController::class, 'updateProfilePicture'])
                 ->name('profile.update.picture');
+                
+            Route::post('profile-info',
+                [ProfileController::class, 'updateProfileInfo'])
+                ->name('profile.update.info');
         });
 });

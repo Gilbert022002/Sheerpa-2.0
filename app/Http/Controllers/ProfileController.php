@@ -35,4 +35,31 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('status', 'Photo de profil mise à jour avec succès!');
     }
+
+    /**
+     * Update the user's profile information.
+     */
+    public function updateProfileInfo(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
+            'phone' => 'nullable|string|max:20',
+            'bio' => 'nullable|string|max:500',
+            'specialty' => 'nullable|string|max:255',
+        ]);
+
+        $user = Auth::user();
+
+        // Update the user's profile information
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'bio' => $request->bio,
+            'specialty' => $request->specialty,
+        ]);
+
+        return redirect()->back()->with('status', 'Profil mis à jour avec succès!');
+    }
 }
