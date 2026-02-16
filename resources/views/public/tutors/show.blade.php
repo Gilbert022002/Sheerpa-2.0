@@ -78,11 +78,12 @@
                     @foreach($courses as $course)
                         <article class="bg-card-light rounded-3xl border border-border-light overflow-hidden soft-shadow transition-transform hover:-translate-y-1">
                             <div class="h-40 bg-slate-100 relative">
-                                <div class="absolute inset-0 flex items-center justify-center opacity-20">
-                                    <span class="material-symbols-outlined text-6xl">school</span>
-                                </div>
                                 @if($course->thumbnail)
                                     <img src="{{ asset('storage/' . $course->thumbnail) }}" class="w-full h-full object-cover" alt="{{ $course->title }}">
+                                @else
+                                    <div class="absolute inset-0 flex items-center justify-center opacity-20">
+                                        <span class="material-symbols-outlined text-6xl">school</span>
+                                    </div>
                                 @endif
                             </div>
                             <div class="p-5">

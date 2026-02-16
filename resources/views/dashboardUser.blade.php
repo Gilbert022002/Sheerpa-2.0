@@ -54,10 +54,14 @@
                 @forelse($courses ?? [] as $course)
                     <article class="bg-card-light rounded-3xl border border-border-light overflow-hidden soft-shadow transition-transform hover:-translate-y-1">
                         <div class="h-40 bg-slate-100 relative">
-                            <div class="absolute inset-0 flex items-center justify-center opacity-20">
-                                <span class="material-symbols-outlined text-6xl">school</span>
-                            </div>
-                            <button class="absolute top-4 right-4 bg-white p-2 rounded-full text-secondary">
+                            @if($course->thumbnail)
+                                <img src="{{ asset('storage/' . $course->thumbnail) }}" class="w-full h-full object-cover" alt="{{ $course->title }}">
+                            @else
+                                <div class="absolute inset-0 flex items-center justify-center opacity-20">
+                                    <span class="material-symbols-outlined text-6xl">school</span>
+                                </div>
+                            @endif
+                            <button class="absolute top-4 right-4 bg-white p-2 rounded-full text-secondary hover:bg-slate-50 transition-colors">
                                 <span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1">favorite</span>
                             </button>
                         </div>
