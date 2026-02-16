@@ -239,16 +239,23 @@
 
                 <div class="mt-8">
                     <h3 class="text-lg font-medium text-text-main-light mb-4">Créneaux horaires du cours</h3>
+                    
+                    @if (session('status') && str_contains(session('status'), 'Créneau'))
+                        <div class="bg-primary/10 text-primary px-4 py-3 rounded-xl font-bold mb-4">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    
                     <div class="bg-white p-6 rounded-xl border border-border-light">
                         <h4 class="font-bold text-text-main-light mb-4">Ajouter un nouveau créneau</h4>
                         <form method="POST" action="{{ route('instructor.courses.slots.store', $course) }}" class="space-y-6">
                             @csrf
-                            
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <!-- Start Date Time -->
                                 <div>
                                     <label for="start_datetime" class="block text-sm font-medium text-text-main-light mb-2">Date et heure de début</label>
-                                    <input type="datetime-local" name="start_datetime" id="start_datetime" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                                    <input type="datetime-local" name="start_datetime" id="start_datetime" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required min="{{ now()->format('Y-m-d\TH:i') }}">
                                     @error('start_datetime')
                                         <p class="text-secondary text-xs mt-1">{{ $message }}</p>
                                     @enderror

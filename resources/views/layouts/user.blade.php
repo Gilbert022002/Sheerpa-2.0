@@ -61,6 +61,7 @@
                     <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Explorer</a>
                     <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Aide</a>
                 </div>
+                
                 <div class="flex items-center gap-3 pl-6 border-l border-border-light">
                     <div class="text-right hidden sm:block">
                         <p class="text-xs font-black">{{ auth()->user()->name }}</p>

@@ -97,15 +97,15 @@
         <div class="bg-white rounded-2xl max-w-md w-full p-6 relative">
             <h3 class="text-xl font-bold text-text-main-light mb-4">Mettre à jour la photo de profil</h3>
             
-            <form id="profileImageForm" method="POST" action="{{ route('instructor.instructor.profile.update.picture') }}" enctype="multipart/form-data">
+            <form id="profileImageForm" method="POST" action="{{ route('instructor.profile.update.picture') }}" enctype="multipart/form-data">
                 @csrf
                 @method('POST')
-                
+
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-text-main-light mb-2">Choisissez une nouvelle photo</label>
                     <input type="file" name="profile_image" accept="image/*" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
                 </div>
-                
+
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="button" onclick="closeProfileModal(event)" class="px-4 py-2 border border-border-light text-text-main-light rounded-lg font-bold hover:bg-slate-50 transition-all">
                         Annuler

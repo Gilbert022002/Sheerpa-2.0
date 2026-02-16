@@ -116,7 +116,7 @@
 
             <div class="mt-8 pt-8 border-t border-border-light text-center">
                 <p class="text-sm text-text-sub-light font-medium">
-                    Already have an account? 
+                    Already have an account?
                     <a href="{{ route('login') }}" class="text-secondary font-bold hover:underline ml-1">Sign in</a>
                 </p>
             </div>

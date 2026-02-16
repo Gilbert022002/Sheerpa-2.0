@@ -68,7 +68,7 @@
 
         <div class="mt-8">
             <h3 class="font-bold text-lg mb-4">Photo de profil</h3>
-            <form method="POST" action="{{ route('profile.update.picture') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('user.profile.update.picture') }}" enctype="multipart/form-data">
                 @csrf
                 @method('POST')
                 <div class="flex items-center gap-6">

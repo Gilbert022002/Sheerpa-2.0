@@ -26,7 +26,13 @@
                         @forelse ($bookings as $booking)
                         <tr class="hover:bg-slate-50">
                             <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->user->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->course->title }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-text-main-light">
+                                @if($booking->course)
+                                    {{ $booking->course->title }}
+                                @else
+                                    Session individuelle
+                                @endif
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ \Carbon\Carbon::parse($booking->start_datetime)->format('d/m/Y H:i') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">

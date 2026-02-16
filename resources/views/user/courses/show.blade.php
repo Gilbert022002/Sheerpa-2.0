@@ -57,10 +57,10 @@
                 </div>
 
                 <div class="p-4 bg-white rounded-xl border border-border-light flex items-center gap-3">
-                    <img 
-                        src="{{ $course->guide->profile_image 
-                                ? asset('storage/' . $course->guide->profile_image) 
-                                : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . $course->guide->id }}" 
+                    <img
+                        src="{{ $course->guide->profile_image
+                                ? asset('storage/' . $course->guide->profile_image)
+                                : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . $course->guide->id }}"
                         class="size-10 rounded-full">
                     <div>
                         <p class="text-sm text-text-sub-light font-bold">Instructeur</p>

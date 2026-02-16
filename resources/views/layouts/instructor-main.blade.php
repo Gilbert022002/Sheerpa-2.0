@@ -61,6 +61,7 @@
                     <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Explorer</a>
                     <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Aide</a>
                 </div>
+                
                 <div class="flex items-center gap-3 pl-6 border-l border-border-light">
                     <div class="text-right hidden sm:block">
                         <p class="text-xs font-black">{{ auth()->user()->name }}</p>
@@ -97,5 +98,102 @@
     </div>
 
     @yield('scripts')
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mesCoursLink = document.querySelector('a[href$="/guide/courses"]');
+            if (mesCoursLink) {
+                mesCoursLink.addEventListener('click', function(e) {
+                    // Check if we're navigating to the courses page
+                    if (!this.classList.contains('top-navigation-mode')) {
+                        // Add the top navigation mode class to body
+                        document.body.classList.add('top-navigation-mode');
+                        
+                        // Move the sidebar navigation to the top
+                        const sidebar = document.querySelector('aside');
+                        const mainContent = document.querySelector('main');
+                        const navContainer = document.createElement('div');
+                        navContainer.className = 'top-navigation-container bg-card-light border-b border-border-light p-4 mb-6';
+                        navContainer.id = 'top-navigation';
+                        
+                        // Clone the navigation
+                        const navClone = document.querySelector('aside nav').cloneNode(true);
+                        navClone.classList.add('flex', 'flex-row', 'gap-2', 'overflow-x-auto', 'pb-2');
+                        navClone.classList.remove('flex-col', 'gap-1');
+                        
+                        // Update the cloned navigation items to be horizontal
+                        const navItems = navClone.querySelectorAll('a');
+                        navItems.forEach(item => {
+                            item.classList.remove('rounded-xl', 'px-4', 'py-3');
+                            item.classList.add('px-3', 'py-2', 'rounded-lg', 'whitespace-nowrap');
+                        });
+                        
+                        navContainer.appendChild(navClone);
+                        
+                        // Insert the navigation at the top of the main content
+                        mainContent.insertBefore(navContainer, mainContent.firstChild);
+                        
+                        // Hide the sidebar
+                        sidebar.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Check if we're already on a courses page and should show top navigation
+            if (window.location.pathname.includes('/guide/courses')) {
+                document.body.classList.add('top-navigation-mode');
+                
+                // Delay execution to ensure DOM is fully loaded
+                window.setTimeout(() => {
+                    const sidebar = document.querySelector('aside');
+                    const mainContent = document.querySelector('main');
+                    if (sidebar && mainContent && !document.getElementById('top-navigation')) {
+                        const navContainer = document.createElement('div');
+                        navContainer.className = 'top-navigation-container bg-card-light border-b border-border-light p-4 mb-6';
+                        navContainer.id = 'top-navigation';
+                        
+                        // Clone the navigation
+                        const navClone = document.querySelector('aside nav').cloneNode(true);
+                        navClone.classList.add('flex', 'flex-row', 'gap-2', 'overflow-x-auto', 'pb-2');
+                        navClone.classList.remove('flex-col', 'gap-1');
+                        
+                        // Update the cloned navigation items to be horizontal
+                        const navItems = navClone.querySelectorAll('a');
+                        navItems.forEach(item => {
+                            item.classList.remove('rounded-xl', 'px-4', 'py-3');
+                            item.classList.add('px-3', 'py-2', 'rounded-lg', 'whitespace-nowrap');
+                        });
+                        
+                        navContainer.appendChild(navClone);
+                        
+                        // Insert the navigation at the top of the main content
+                        mainContent.insertBefore(navContainer, mainContent.firstChild);
+                        
+                        // Hide the sidebar
+                        sidebar.style.display = 'none';
+                    }
+                }, 100);
+            }
+        });
+    </script>
+    
+    <style>
+        body.top-navigation-mode main {
+            padding-top: 0;
+        }
+        
+        .top-navigation-container {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            max-height: 80px;
+            overflow: auto;
+        }
+        
+        .top-navigation-container nav {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+    </style>
 </body>
 </html>

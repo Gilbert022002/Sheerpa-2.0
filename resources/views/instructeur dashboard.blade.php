@@ -82,13 +82,29 @@
                                             {{ \Carbon\Carbon::parse($session->start_datetime)->isoFormat('dddd D MMMM YYYY') }} • {{ \Carbon\Carbon::parse($session->start_datetime)->format('H:i') }} ({{ \Carbon\Carbon::parse($session->end_datetime)->diffInMinutes(\Carbon\Carbon::parse($session->start_datetime)) }} min)
                                         </span>
                                     </div>
-                                    <h4 class="text-2xl font-black mt-2 mb-3 leading-tight">{{ $session->course->title }}</h4>
+                                    <h4 class="text-2xl font-black mt-2 mb-3 leading-tight">
+                                        @if($session->course)
+                                            {{ $session->course->title }}
+                                        @else
+                                            Session individuelle
+                                        @endif
+                                    </h4>
                                     <div class="flex items-center gap-4 text-text-sub-light mb-8">
                                         <span class="flex items-center gap-1 text-xs font-bold">
-                                            <span class="material-symbols-outlined text-sm">group</span> {{ $session->course->bookings->where('status', 'confirmed')->count() }} inscrits
+                                            <span class="material-symbols-outlined text-sm">group</span> 
+                                            @if($session->course)
+                                                {{ $session->course->bookings->where('status', 'confirmed')->count() }} inscrits
+                                            @else
+                                                0 inscrits
+                                            @endif
                                         </span>
                                         <span class="flex items-center gap-1 text-xs font-bold">
-                                            <span class="material-symbols-outlined text-sm">layers</span> {{ $session->course->level ?: 'Niveau Intermédiaire' }}
+                                            <span class="material-symbols-outlined text-sm">layers</span> 
+                                            @if($session->course)
+                                                {{ $session->course->level ?: 'Niveau Intermédiaire' }}
+                                            @else
+                                                Niveau Intermédiaire
+                                            @endif
                                         </span>
                                     </div>
 
@@ -96,9 +112,15 @@
                                         <a href="{{ $session->meeting_link ?: '#' }}" target="_blank" class="px-8 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:opacity-90 transition-all flex items-center gap-2">
                                             <span class="material-symbols-outlined">videocam</span> Lancer le meeting
                                         </a>
-                                        <a href="{{ route('instructor.courses.show', $session->course) }}" class="px-6 py-3 bg-white border border-border-light text-text-main-light rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors">
-                                            Gérer les ressources
-                                        </a>
+                                        @if($session->course)
+                                            <a href="{{ route('instructor.courses.show', $session->course) }}" class="px-6 py-3 bg-white border border-border-light text-text-main-light rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors">
+                                                Gérer les ressources
+                                            </a>
+                                        @else
+                                            <span class="px-6 py-3 bg-white border border-border-light text-text-sub-light rounded-xl font-bold text-sm cursor-not-allowed">
+                                                Gérer les ressources
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <span class="material-symbols-outlined absolute -right-6 -bottom-6 text-[180px] text-primary/10 group-hover:scale-110 transition-transform duration-500">
