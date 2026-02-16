@@ -162,6 +162,13 @@ Route::middleware(['auth'])->group(function () {
             Route::post('courses/{course}/book', [UserCourseController::class, 'book'])
                 ->name('courses.book');
 
+            // Public tutor profile routes
+            Route::get('tutors/{tutor}', [\App\Http\Controllers\PublicTutorController::class, 'show'])
+                ->name('tutors.show');
+
+            Route::get('tutors', [\App\Http\Controllers\PublicTutorController::class, 'index'])
+                ->name('tutors.index');
+
             Route::get('bookings', [UserCourseController::class, 'bookings'])
                 ->name('bookings.index');
 

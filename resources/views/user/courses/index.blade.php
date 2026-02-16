@@ -58,14 +58,14 @@
 
                         {{-- Guide avec image profil (fusion des 2 versions) --}}
                         <div class="flex items-center gap-2 pt-4 border-t border-border-light">
-                            <img 
-                                src="{{ $course->guide->profile_image 
-                                        ? asset('storage/' . $course->guide->profile_image) 
-                                        : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . $course->guide->id }}" 
+                            <img
+                                src="{{ $course->guide->profile_image
+                                        ? asset('storage/' . $course->guide->profile_image)
+                                        : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . $course->guide->id }}"
                                 class="size-8 rounded-full">
-                            <span class="text-sm font-bold text-text-sub-light">
+                            <a href="{{ route('user.tutors.show', $course->guide) }}" class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors">
                                 {{ $course->guide->name }}
-                            </span>
+                            </a>
                         </div>
 
                         <a href="{{ route('user.courses.show', $course) }}" 

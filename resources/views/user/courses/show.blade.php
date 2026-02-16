@@ -64,9 +64,9 @@
                         class="size-10 rounded-full">
                     <div>
                         <p class="text-sm text-text-sub-light font-bold">Instructeur</p>
-                        <p class="font-bold text-text-main-light">
+                        <a href="{{ route('user.tutors.show', $course->guide) }}" class="font-bold text-text-main-light hover:text-primary transition-colors">
                             {{ $course->guide->name }}
-                        </p>
+                        </a>
                     </div>
                 </div>
 

@@ -14,6 +14,9 @@
     <a href="{{ route('user.bookings.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('user.bookings.index') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
         <span class="material-symbols-outlined">calendar_today</span> Mes Réservations
     </a>
+    <a href="{{ route('user.tutors.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('user.tutors.index') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
+        <span class="material-symbols-outlined">groups</span> Trouver un tuteur
+    </a>
     <a href="{{ route('user.invoices') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('user.invoices') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
         <span class="material-symbols-outlined">receipt_long</span> Invoices
     </a>

@@ -70,7 +70,7 @@
                             </div>
                             <div class="flex items-center gap-3 pt-4 border-t border-border-light mt-4">
                                 <img src="{{ $course->guide->profile_image ? asset('storage/' . $course->guide->profile_image) : asset('images/default/profile-default.jpg') }}" class="size-8 rounded-full">
-                                <span class="text-sm font-bold text-text-sub-light">{{ $course->guide->name }} <span class="text-primary">• Guide</span></span>
+                                <a href="{{ route('user.tutors.show', $course->guide) }}" class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors">{{ $course->guide->name }} <span class="text-primary">• Guide</span></a>
                             </div>
                             <a href="{{ route('user.courses.show', $course) }}" class="mt-4 block px-4 py-2 bg-primary text-white rounded-xl text-center font-bold hover:bg-primary/90 transition-all text-sm">
                                 Réserver
