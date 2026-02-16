@@ -114,7 +114,7 @@
 
             <div class="mt-8 pt-8 border-t border-border-light text-center">
                 <p class="text-sm text-text-sub-light font-medium">
-                    Don't have an account? 
+                    Don't have an account?
                     <a href="{{ route('register') }}" class="text-secondary font-bold hover:underline ml-1">Create Account</a>
                 </p>
             </div>
