@@ -66,7 +66,7 @@
                         <p class="text-xs font-black">{{ auth()->user()->name }}</p>
                         <p class="text-[10px] text-text-sub-light font-bold">{{ auth()->user()->role }}</p>
                     </div>
-                    <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) . '?v=' . filemtime(storage_path('app/public/' . auth()->user()->profile_image)) : asset('images/default/profile-default.jpg') }}" class="size-10 rounded-full bg-primary/5 object-cover" alt="Profile">
+                    <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) . '?' . time() : asset('images/default/profile-default.jpg') }}" class="size-10 rounded-full bg-primary/5 object-cover" alt="Profile">
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
