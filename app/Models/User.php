@@ -27,6 +27,9 @@ class User extends Authenticatable
         'profile_image',
         'stripe_account_id',
         'presentation_video_url',
+        'phone',
+        'specialty',
+        'bio',
     ];
 
     /**

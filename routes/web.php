@@ -140,6 +140,13 @@ Route::middleware(['auth'])->group(function () {
 
             Route::post('profile-picture', [ProfileController::class, 'updateProfilePicture'])
                 ->name('profile.update.picture');
+
+            Route::post('profile-info', [ProfileController::class, 'updateProfileInfo'])
+                ->name('profile.update.info');
+
+            // Route for tutor to view user profile
+            Route::get('users/{user}', [\App\Http\Controllers\Instructor\UserProfileController::class, 'show'])
+                ->name('user.profile.show');
         });
 
 
@@ -212,5 +219,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('profile-picture',
                 [ProfileController::class, 'updateProfilePicture'])
                 ->name('profile.update.picture');
+                
+            Route::post('profile-info',
+                [ProfileController::class, 'updateProfileInfo'])
+                ->name('profile.update.info');
         });
 });

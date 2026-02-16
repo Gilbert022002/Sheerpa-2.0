@@ -26,7 +26,11 @@
                                 @forelse ($bookings as $booking)
                                     @if (($booking->status === 'confirmed' || $booking->status === 'pending') && \Carbon\Carbon::parse($booking->start_datetime)->isFuture())
                                     <tr class="hover:bg-slate-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->user->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">
+                                            <a href="{{ route('instructor.user.profile.show', $booking->user) }}" class="hover:text-primary transition-colors">
+                                                {{ $booking->user->name }}
+                                            </a>
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-text-main-light">
                                             @if($booking->course)
                                                 {{ $booking->course->title }}
@@ -83,7 +87,11 @@
                                 @forelse ($bookings as $booking)
                                     @if (($booking->status === 'confirmed' || $booking->status === 'completed') && \Carbon\Carbon::parse($booking->start_datetime)->isPast())
                                     <tr class="hover:bg-slate-50">
-                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->user->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-text-main-light">
+                                            <a href="{{ route('instructor.user.profile.show', $booking->user) }}" class="hover:text-primary transition-colors">
+                                                {{ $booking->user->name }}
+                                            </a>
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-text-main-light">
                                             @if($booking->course)
                                                 {{ $booking->course->title }}

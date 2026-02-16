@@ -80,7 +80,11 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($upcomingBookings as $booking)
                                         <tr class="hover:bg-slate-50">
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $booking->user->name }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="{{ route('instructor.user.profile.show', $booking->user) }}" class="hover:text-primary transition-colors">
+                                                    {{ $booking->user->name }}
+                                                </a>
+                                            </td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($booking->start_datetime)->format('d/m/Y H:i') }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -119,7 +123,11 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($pastBookings as $booking)
                                         <tr class="hover:bg-slate-50">
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $booking->user->name }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <a href="{{ route('instructor.user.profile.show', $booking->user) }}" class="hover:text-primary transition-colors">
+                                                    {{ $booking->user->name }}
+                                                </a>
+                                            </td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($booking->start_datetime)->format('d/m/Y H:i') }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">

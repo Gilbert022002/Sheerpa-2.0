@@ -44,7 +44,7 @@
             </div>
 
             <div class="bg-white p-6 rounded-2xl border border-border-light soft-shadow">
-                <h3 class="font-bold text-lg mb-4">À propos de moi</h3>
+                <h3 class="font-bold text-lg mb-4">Biographie</h3>
                 <p class="text-text-sub-light">
                     {{ auth()->user()->bio ?? 'Aucune description fournie. Ajoutez une brève description de votre expérience et de vos compétences.' }}
                 </p>
@@ -54,7 +54,7 @@
         <div class="mt-8">
             <h3 class="font-bold text-lg mb-4">Paramètres du profil</h3>
             <div class="flex flex-wrap gap-4">
-                <button class="px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all">
+                <button type="button" onclick="openEditProfileModal()" class="px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all">
                     Modifier le profil
                 </button>
                 <button class="px-6 py-3 bg-white border border-border-light text-text-main-light rounded-xl font-bold hover:bg-slate-50 transition-all">
@@ -65,25 +65,60 @@
                 </button>
             </div>
         </div>
+        
+        <!-- Modal for editing profile information -->
+        <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-2xl max-w-md w-full p-6 relative">
+                <h3 class="text-xl font-bold text-text-main-light mb-4">Modifier les informations du profil</h3>
 
-        <div class="mt-8">
-            <h3 class="font-bold text-lg mb-4">Photo de profil</h3>
-            <form method="POST" action="{{ route('user.profile.update.picture') }}" enctype="multipart/form-data">
-                @csrf
-                @method('POST')
-                <div class="flex items-center gap-6">
-                    <div class="relative">
-                        <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . auth()->user()->id }}" class="size-24 rounded-full bg-primary/5 object-cover" alt="Profile Preview">
+                <form id="profileInfoForm" method="POST" action="{{ route('user.profile.update.info') }}">
+                    @csrf
+                    @method('POST')
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-text-main-light mb-2">Nom complet</label>
+                        <input type="text" name="name" value="{{ auth()->user()->name }}" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
                     </div>
-                    <div class="flex-1">
-                        <input type="file" name="profile_image" accept="image/*" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all mb-3">
-                        <button type="submit" class="px-6 py-3 bg-secondary text-white rounded-xl font-bold hover:opacity-90 transition-all">
-                            Mettre à jour la photo
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-text-main-light mb-2">Email</label>
+                        <input type="email" name="email" value="{{ auth()->user()->email }}" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-text-main-light mb-2">Téléphone</label>
+                        <input type="tel" name="phone" value="{{ auth()->user()->phone ?? '' }}" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-text-main-light mb-2">Spécialité</label>
+                        <input type="text" name="specialty" value="{{ auth()->user()->specialty ?? '' }}" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-sm font-medium text-text-main-light">Biographie</label>
+                            <span class="text-xs text-text-sub-light" id="bioCounter">0/100</span>
+                        </div>
+                        <textarea name="bio" rows="3" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" maxlength="100" oninput="updateCounter(this, 'bioCounter')">{{ auth()->user()->bio ?? '' }}</textarea>
+                    </div>
+
+                    <div class="flex justify-end gap-3 mt-6">
+                        <button type="button" onclick="closeEditProfileModal(event)" class="px-4 py-2 border border-border-light text-text-main-light rounded-lg font-bold hover:bg-slate-50 transition-all">
+                            Annuler
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-secondary text-white rounded-lg font-bold hover:opacity-90 transition-all">
+                            Enregistrer
                         </button>
                     </div>
-                </div>
-            </form>
+                </form>
+
+                <button type="button" onclick="closeEditProfileModal(event)" class="absolute top-4 right-4 text-text-sub-light hover:text-text-main-light">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
         </div>
+
     </div>
 @endsection
 
@@ -122,10 +157,32 @@
         function openProfileModal() {
             document.getElementById('profileModal').classList.remove('hidden');
         }
-        
+
         function closeProfileModal(e) {
             e.stopPropagation();
             document.getElementById('profileModal').classList.add('hidden');
         }
+        
+        function openEditProfileModal() {
+            document.getElementById('editProfileModal').classList.remove('hidden');
+        }
+
+        function closeEditProfileModal(e) {
+            e.stopPropagation();
+            document.getElementById('editProfileModal').classList.add('hidden');
+        }
+        
+        function updateCounter(textarea, counterId) {
+            const counter = document.getElementById(counterId);
+            counter.textContent = textarea.value.length + '/100';
+        }
+        
+        // Initialize counters when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const bioTextarea = document.querySelector('textarea[name="bio"]');
+            if (bioTextarea) {
+                updateCounter(bioTextarea, 'bioCounter');
+            }
+        });
     </script>
 @endsection

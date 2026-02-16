@@ -25,7 +25,11 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($bookings as $booking)
                         <tr class="hover:bg-slate-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-text-main-light">{{ $booking->user->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-text-main-light">
+                                <a href="{{ route('instructor.user.profile.show', $booking->user) }}" class="hover:text-primary transition-colors">
+                                    {{ $booking->user->name }}
+                                </a>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-text-main-light">
                                 @if($booking->course)
                                     {{ $booking->course->title }}

@@ -35,4 +35,51 @@ class ProfileController extends Controller
 
         return redirect()->back()->with('status', 'Photo de profil mise à jour avec succès!');
     }
+
+    /**
+     * Update the user's profile information.
+     */
+    public function updateProfileInfo(Request $request)
+    {
+        $user = Auth::user();
+        
+        // Define validation rules based on user role
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . Auth::id() . ',id',
+            'phone' => 'nullable|string|max:20',
+            'bio' => 'nullable|string|max:100',
+        ];
+
+        // Add role-specific fields
+        if ($user->role === 'instructor') {
+            $rules['specialty'] = 'nullable|string|max:255';
+            $rules['experience'] = 'nullable|string|max:100';
+        } else {
+            $rules['specialty'] = 'nullable|string|max:255';
+        }
+
+        $request->validate($rules);
+
+        // Prepare update data
+        $updateData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'bio' => $request->bio,
+        ];
+
+        // Add role-specific fields
+        if ($user->role === 'instructor') {
+            $updateData['specialty'] = $request->specialty;
+            $updateData['experience'] = $request->experience;
+        } else {
+            $updateData['specialty'] = $request->specialty;
+        }
+
+        // Update the user's profile information
+        $user->update($updateData);
+
+        return redirect()->back()->with('status', 'Profil mis à jour avec succès!');
+    }
 }
