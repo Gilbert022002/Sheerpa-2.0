@@ -1,7 +1,7 @@
 @extends('layouts.user')
 
 @section('title', 'Sherpa Profile - Dashboard')
-    
+
 @section('content')
 
 
@@ -155,16 +155,16 @@
     <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 relative">
             <h3 class="text-xl font-bold text-text-main-light mb-4">Mettre à jour la photo de profil</h3>
-            
+
             <form id="profileImageForm" method="POST" action="{{ route('user.profile.update.picture') }}" enctype="multipart/form-data">
                 @csrf
                 @method('POST')
-                
+
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-text-main-light mb-2">Choisissez une nouvelle photo</label>
                     <input type="file" name="profile_image" accept="image/*" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
                 </div>
-                
+
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="button" onclick="closeProfileModal(event)" class="px-4 py-2 border border-border-light text-text-main-light rounded-lg font-bold hover:bg-slate-50 transition-all">
                         Annuler
@@ -174,7 +174,7 @@
                     </button>
                 </div>
             </form>
-            
+
             <button type="button" onclick="closeProfileModal(event)" class="absolute top-4 right-4 text-text-sub-light hover:text-text-main-light">
                 <span class="material-symbols-outlined">close</span>
             </button>
@@ -190,24 +190,24 @@
             e.stopPropagation();
             document.getElementById('profileModal').classList.add('hidden');
         }
-        
+
         // Favorite button functionality
         document.querySelectorAll('.favorite-btn').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 const courseId = this.getAttribute('data-course-id');
                 const icon = this.querySelector('.material-symbols-outlined');
-                
+
                 // Get CSRF token from meta tag
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-                
+
                 if (!csrfToken) {
                     console.error('CSRF token not found');
                     return;
                 }
-                
+
                 // Make the request
                 fetch(`/user/courses/${courseId}/favorite`, {
                     method: 'POST',
@@ -239,7 +239,7 @@
                             icon.style.fontVariationSettings = "'FILL' 0";
                             icon.style.color = '';
                         }
-                        
+
                         // Add bounce animation
                         icon.classList.add('animate-bounce');
                         setTimeout(() => {

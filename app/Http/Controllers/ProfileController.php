@@ -42,13 +42,13 @@ class ProfileController extends Controller
     public function updateProfileInfo(Request $request)
     {
         $user = Auth::user();
-        
+
         // Define validation rules based on user role
         $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . Auth::id() . ',id',
             'phone' => 'nullable|string|max:20',
-            'bio' => 'nullable|string|max:100',
+            'bio' => 'nullable|string|max:500',
         ];
 
         // Add role-specific fields
@@ -79,6 +79,13 @@ class ProfileController extends Controller
 
         // Update the user's profile information
         $user->update($updateData);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Profil mis à jour avec succès!',
+            ]);
+        }
 
         return redirect()->back()->with('status', 'Profil mis à jour avec succès!');
     }
