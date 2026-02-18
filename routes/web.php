@@ -9,6 +9,8 @@ use App\Http\Controllers\Instructor\AvailabilityController;
 use App\Http\Controllers\Instructor\CourseSlotController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CourseController as UserCourseController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -26,6 +28,26 @@ Route::get('register', [AuthController::class, 'showRegistrationForm'])->name('r
 Route::post('register', [AuthController::class, 'register']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
+/*
+|--------------------------------------------------------------------------
+| Email Verification Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('email/verify', function () {
+    return view('auth.verification-notice');
+})->middleware(['auth'])->name('verification.notice');
+
+Route::get('email/verify/{id}/{hash}', function (Illuminate\Foundation\Auth\EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect()->route('login')->with('message', 'Votre email a été vérifié avec succès ! Vous pouvez maintenant vous connecter.');
+})->middleware(['signed'])->name('verification.verify');
+
+Route::post('email/resend', function (Illuminate\Http\Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('resent', true);
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +55,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/dashboard', function () {
         if (auth()->user()->role === 'instructor') {

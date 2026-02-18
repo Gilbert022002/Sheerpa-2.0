@@ -28,6 +28,14 @@ class Course extends Model
     ];
 
     /**
+     * Get the category name attribute (accessor for backward compatibility).
+     */
+    public function getCategoryAttribute()
+    {
+        return $this->categoryModel ? $this->categoryModel->name : null;
+    }
+
+    /**
      * Get the guide that owns the course.
      */
     public function guide()

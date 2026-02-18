@@ -32,6 +32,14 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
+            
+            // Check if email is verified
+            if (!$user->hasVerifiedEmail()) {
+                Auth::logout();
+                return redirect()->route('verification.notice')
+                    ->with('message', 'Veuillez vérifier votre adresse email avant de vous connecter.');
+            }
+            
             if ($user->role === 'admin') {
                 return redirect()->intended('/admin/dashboard');
             }
@@ -81,16 +89,15 @@ class AuthController extends Controller
 
         $user = User::create($data);
 
-        Auth::login($user);
-        
-        if ($user->role === 'admin') {
-            return redirect('/admin/dashboard');
-        }
-        if ($user->role === 'instructor') {
-            return redirect('/instructor/dashboard');
-        }
+        // Send verification email manually
+        $user->sendEmailVerificationNotification();
 
-        return redirect('/dashboard');
+        // Log the user in (they can access limited features until verified)
+        Auth::login($user);
+
+        // Redirect to verification notice page
+        return redirect()->route('verification.notice')
+            ->with('message', 'Un email de vérification a été envoyé à votre adresse email.');
     }
 
     /**

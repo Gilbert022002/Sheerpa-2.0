@@ -55,6 +55,12 @@
                 <p class="text-text-sub-light text-sm font-medium">Let's get you started!</p>
             </div>
 
+            @if (session('message'))
+                <div class="bg-primary/10 text-primary px-4 py-3 rounded-xl font-bold text-sm mb-6">
+                    {{ session('message') }}
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('register') }}" class="space-y-6">
                 @csrf
                 <div class="space-y-2">
