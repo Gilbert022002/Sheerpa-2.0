@@ -47,7 +47,6 @@ class NotificationController extends Controller
     {
         $notifications = Auth::user()
             ->notifications()
-            ->with('user')
             ->latest()
             ->take(5)
             ->get()
@@ -92,14 +91,10 @@ class NotificationController extends Controller
     {
         $this->notificationService->markAllAsRead(Auth::user());
 
-        if (request()->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Toutes les notifications ont été marquées comme lues',
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Toutes les notifications ont été marquées comme lues');
+        return response()->json([
+            'success' => true,
+            'message' => 'Toutes les notifications ont été marquées comme lues',
+        ]);
     }
 
     /**
@@ -110,14 +105,10 @@ class NotificationController extends Controller
         $notification = Auth::user()->notifications()->findOrFail($id);
         $notification->delete();
 
-        if (request()->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Notification supprimée',
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Notification supprimée');
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification supprimée',
+        ]);
     }
 
     /**
@@ -126,11 +117,11 @@ class NotificationController extends Controller
     private function getNotificationUrl($notification)
     {
         if (isset($notification->data['course_id'])) {
-            return route('user.courses.show', $notification->data['course_id']);
+            return route('instructor.courses.show', $notification->data['course_id']);
         }
         
         if (isset($notification->data['booking_id'])) {
-            return route('user.bookings.index');
+            return route('instructor.meetings.index');
         }
         
         return route('notifications.index');

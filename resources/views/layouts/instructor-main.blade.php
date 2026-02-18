@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Sheerpa Guide - Dashboard')</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.png') }}">
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -10,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -61,7 +63,10 @@
                     <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Explorer</a>
                     <a class="text-sm font-bold text-text-sub-light hover:text-primary transition-colors" href="#">Aide</a>
                 </div>
-                
+
+                {{-- Notification Bell --}}
+                <x-notification-bell :unread-count="auth()->user()->unreadNotificationsCount()" />
+
                 <div class="flex items-center gap-3 pl-6 border-l border-border-light">
                     <div class="text-right hidden sm:block">
                         <p class="text-xs font-black">{{ auth()->user()->name }}</p>

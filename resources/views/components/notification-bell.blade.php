@@ -92,13 +92,9 @@ function notificationBell() {
         pollingInterval: null,
         
         init() {
-            // Load initial notifications
             this.loadNotifications();
-            
-            // Start polling for new notifications every 30 seconds
             this.startPolling();
             
-            // Listen for page visibility changes to pause/resume polling
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
                     this.stopPolling();
@@ -118,8 +114,6 @@ function notificationBell() {
         
         startPolling() {
             if (this.pollingInterval) return;
-            
-            // Poll every 3 seconds for real-time updates
             this.pollingInterval = setInterval(() => {
                 this.loadNotifications();
             }, 3000);
@@ -134,20 +128,24 @@ function notificationBell() {
         
         async loadNotifications() {
             try {
-                const response = await fetch('{{ route("api.notifications.recent") }}');
+                const url = '{{ route("api.notifications.recent") }}';
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error('HTTP error! status: ' + response.status);
+                }
+                
                 const data = await response.json();
                 
-                // Update unread count with animation
                 if (data.unread_count !== this.unreadCount) {
+                    const oldCount = this.unreadCount;
                     this.unreadCount = data.unread_count;
                     
-                    // Play notification sound if new notifications arrived and dropdown is closed
-                    if (data.unread_count > this.unreadCount && !this.open) {
+                    if (data.unread_count > oldCount && !this.open) {
                         this.playNotificationSound();
                     }
                 }
                 
-                // Update notifications list
                 this.notifications = data.notifications;
             } catch (error) {
                 console.error('Error loading notifications:', error);
@@ -156,16 +154,37 @@ function notificationBell() {
         
         async markAllAsRead() {
             try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]');
+                console.log('CSRF Token found:', csrfToken ? 'Yes' : 'No');
+                
+                if (!csrfToken) {
+                    console.error('CSRF token not found in meta tag!');
+                    alert('Erreur: Token CSRF non trouvé. Veuillez rafraîchir la page.');
+                    return;
+                }
+                
                 const response = await fetch('{{ route("notifications.read-all") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'X-CSRF-TOKEN': csrfToken.content,
                         'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
+                    credentials: 'same-origin',
                 });
                 
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    if (response.status === 419) {
+                        throw new Error('Session expirée. Veuillez rafraîchir la page.');
+                    }
+                    throw new Error('HTTP error! status: ' + response.status);
+                }
+                
                 const data = await response.json();
+                console.log('Mark all read response:', data);
                 
                 if (data.success) {
                     this.unreadCount = 0;
@@ -173,17 +192,12 @@ function notificationBell() {
                 }
             } catch (error) {
                 console.error('Error marking notifications as read:', error);
+                alert(error.message || 'Erreur lors de la mise à jour des notifications');
             }
         },
         
         playNotificationSound() {
-            // Optional: Play a subtle notification sound
-            // Uncomment to enable sound notification
-            /*
-            const audio = new Audio('/sounds/notification.mp3');
-            audio.volume = 0.3;
-            audio.play().catch(e => console.log('Sound play failed:', e));
-            */
+            // Optional sound notification
         }
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('layouts.instructor')
 
 @section('title', 'Mes Notifications')
 
@@ -46,12 +46,12 @@
                     @if($notification->data)
                         <div class="flex gap-2">
                             @if(isset($notification->data['booking_id']))
-                                <a href="{{ route('user.bookings.index') }}" class="text-xs font-bold text-primary hover:text-primary/80 transition-colors">
-                                    Voir la réservation
+                                <a href="{{ route('instructor.meetings.index') }}" class="text-xs font-bold text-primary hover:text-primary/80 transition-colors">
+                                    Voir le meeting
                                 </a>
                             @endif
                             @if(isset($notification->data['course_id']))
-                                <a href="{{ route('user.courses.show', $notification->data['course_id']) }}" class="text-xs font-bold text-primary hover:text-primary/80 transition-colors">
+                                <a href="{{ route('instructor.courses.show', $notification->data['course_id']) }}" class="text-xs font-bold text-primary hover:text-primary/80 transition-colors">
                                     Voir le cours
                                 </a>
                             @endif
