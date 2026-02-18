@@ -20,6 +20,7 @@ class Course extends Model
         'description',
         'price',
         'guide_id',
+        'category_id',
         'duration',
         'level',
         'category',
@@ -32,6 +33,14 @@ class Course extends Model
     public function guide()
     {
         return $this->belongsTo(User::class, 'guide_id');
+    }
+
+    /**
+     * Get the category this course belongs to.
+     */
+    public function categoryModel()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     /**

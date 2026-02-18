@@ -73,9 +73,16 @@
 
                         <!-- Category -->
                         <div>
-                            <label for="category" class="block text-sm font-medium text-text-main-light mb-2">Catégorie</label>
-                            <input type="text" name="category" id="category" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" value="{{ old('category', $course->category) }}" required>
-                            @error('category')
+                            <label for="category_id" class="block text-sm font-medium text-text-main-light mb-2">Catégorie *</label>
+                            <select name="category_id" id="category_id" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
+                                <option value="">Sélectionner une catégorie</option>
+                                @foreach(\App\Models\Category::active()->get() as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id', $course->category_id) == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
                                 <p class="text-secondary text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>

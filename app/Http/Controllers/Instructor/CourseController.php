@@ -44,7 +44,7 @@ class CourseController extends Controller
             'price' => ['required', 'numeric', 'min:0'],
             'duration' => ['required', 'integer', 'min:1'], // in minutes
             'level' => ['required', 'string', Rule::in(['débutant', 'intermédiaire', 'avancé'])],
-            'category' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'exists:categories,id'],
             'thumbnail' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,gif', 'max:2048'], // Allowed formats, Max 2MB
             'course_slots' => ['required', 'array', 'min:1'],
             'course_slots.*.date' => ['required', 'date', 'after_or_equal:today'],
@@ -161,7 +161,7 @@ class CourseController extends Controller
             'price' => ['required', 'numeric', 'min:0'],
             'duration' => ['required', 'integer', 'min:1'], // in minutes
             'level' => ['required', 'string', Rule::in(['débutant', 'intermédiaire', 'avancé'])],
-            'category' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'exists:categories,id'],
             'thumbnail' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp,gif', 'max:2048'], // Allowed formats, Max 2MB
         ]);
 

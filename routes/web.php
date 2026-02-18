@@ -90,6 +90,11 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/admin/instructors/{instructor}/reject', [AdminController::class, 'rejectInstructor'])
             ->name('admin.instructors.reject');
+
+        // Category management routes
+        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)
+            ->except(['show'])
+            ->names('categories');
     });
 
 

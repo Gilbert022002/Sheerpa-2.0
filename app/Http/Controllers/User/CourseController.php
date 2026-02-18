@@ -31,10 +31,28 @@ class CourseController extends Controller
     /**
      * Display a listing of all available courses.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::with('guide')->latest()->paginate(10); // Example, adjust as needed
-        return view('user.courses.index', compact('courses'));
+        $query = Course::with(['guide', 'categoryModel']);
+        
+        // Search functionality
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                  ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+        }
+        
+        // Category filter
+        if ($request->has('category') && $request->category) {
+            $query->where('category_id', $request->category);
+        }
+        
+        $courses = $query->latest()->paginate(12)->withQueryString();
+        $categories = \App\Models\Category::active()->get();
+        
+        return view('user.courses.index', compact('courses', 'categories'));
     }
 
     /**
