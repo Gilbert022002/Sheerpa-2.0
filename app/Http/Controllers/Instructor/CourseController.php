@@ -6,10 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Course;
+use App\Models\User;
+use App\Services\NotificationService;
 use Illuminate\Validation\Rule; // Added this line
 
 class CourseController extends Controller
 {
+    protected $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     /**
      * Display a listing of the instructor's courses.
      */
@@ -83,7 +92,7 @@ class CourseController extends Controller
                 if (!empty($slot['date']) && !empty($slot['start_time']) && !empty($slot['end_time'])) {
                     $startDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $slot['date'] . ' ' . $slot['start_time']);
                     $endDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i', $slot['date'] . ' ' . $slot['end_time']);
-                    
+
                     $course->courseSlots()->create([
                         'start_datetime' => $startDateTime,
                         'end_datetime' => $endDateTime,
@@ -91,6 +100,24 @@ class CourseController extends Controller
                     ]);
                 }
             }
+        }
+
+        // Send notification to the tutor about course creation
+        $this->notificationService->sendCourseCreatedNotification($course);
+
+        // Send notification to all users about new course available
+        $users = User::where('role', 'user')->get();
+        foreach ($users as $user) {
+            $this->notificationService->sendCustomNotification(
+                $user,
+                'course_created',
+                'Nouveau cours disponible',
+                sprintf('Le cours "%s" avec %s est maintenant disponible à la réservation!', 
+                    $course->title,
+                    $course->guide->name
+                ),
+                ['course_id' => $course->id, 'guide_id' => $course->guide_id]
+            );
         }
 
         return redirect()->route('instructor.courses.index')->with('status', 'Course created successfully!');

@@ -10,6 +10,7 @@ use App\Services\AvailabilityService;
 use App\Services\BookingService;
 use App\Services\PaymentService;
 use App\Services\MeetingService;
+use App\Services\NotificationService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -19,13 +20,21 @@ class CourseController extends Controller
     protected $bookingService;
     protected $paymentService;
     protected $meetingService;
+    protected $notificationService;
 
-    public function __construct(AvailabilityService $availabilityService, BookingService $bookingService, PaymentService $paymentService, MeetingService $meetingService)
+    public function __construct(
+        AvailabilityService $availabilityService,
+        BookingService $bookingService,
+        PaymentService $paymentService,
+        MeetingService $meetingService,
+        NotificationService $notificationService
+    )
     {
         $this->availabilityService = $availabilityService;
         $this->bookingService = $bookingService;
         $this->paymentService = $paymentService;
         $this->meetingService = $meetingService;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -147,10 +156,19 @@ class CourseController extends Controller
                     ->where('start_datetime', $start_datetime->format('Y-m-d H:i:s'))
                     ->where('end_datetime', $end_datetime->format('Y-m-d H:i:s'))
                     ->first();
-                
+
                 if ($courseSlot) {
                     $courseSlot->is_available = false;
                     $courseSlot->save();
+                }
+
+                // Send notifications after booking is confirmed
+                if ($booking->status === 'confirmed') {
+                    // Notify the tutor about the new reservation
+                    $this->notificationService->sendMeetingReservationNotification($booking);
+                    
+                    // Notify the user about the confirmed booking
+                    $this->notificationService->sendBookingConfirmedNotification($booking);
                 }
             });
         } catch (\Exception $e) {

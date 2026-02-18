@@ -96,6 +96,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the notifications for the user.
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Get the unread notifications count for the user.
+     */
+    public function unreadNotificationsCount()
+    {
+        return $this->notifications()->unread()->count();
+    }
+
+    /**
      * Get the user's favorite courses.
      */
     public function favorites()

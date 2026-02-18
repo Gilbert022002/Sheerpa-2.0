@@ -48,6 +48,22 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboardUser', compact('courses'));
     })->name('dashboard');
 
+    // Notification routes
+    Route::get('notifications', [\App\Http\Controllers\NotificationController::class, 'index'])
+        ->name('notifications.index');
+    
+    Route::post('notifications/{notification}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])
+        ->name('notifications.read');
+    
+    Route::post('notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])
+        ->name('notifications.read-all');
+    
+    Route::delete('notifications/{notification}', [\App\Http\Controllers\NotificationController::class, 'destroy'])
+        ->name('notifications.destroy');
+    
+    Route::get('notifications/unread-count', [\App\Http\Controllers\NotificationController::class, 'unreadCount'])
+        ->name('notifications.unread-count');
+
 
     /*
     |--------------------------------------------------------------------------
