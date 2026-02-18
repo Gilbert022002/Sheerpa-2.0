@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Course;
+use App\Models\Booking;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -18,8 +20,21 @@ class AdminController extends Controller
         $pendingInstructors = User::where('role', 'instructor')
                                 ->where('instructor_status', 'pending')
                                 ->get();
-        
-        return view('admin.dashboard', compact('pendingInstructors'));
+
+        // Stats
+        $totalUsers = User::where('role', 'user')->count();
+        $totalCourses = Course::count();
+        $meetingsThisMonth = Booking::whereMonth('start_datetime', now()->month)
+                                    ->whereYear('start_datetime', now()->year)
+                                    ->count();
+        $approvedInstructors = User::where('role', 'instructor')
+                                   ->where('instructor_status', 'approved')
+                                   ->count();
+
+        // Recent courses
+        $recentCourses = Course::with('guide')->latest()->limit(10)->get();
+
+        return view('admin.dashboard', compact('pendingInstructors', 'totalUsers', 'totalCourses', 'meetingsThisMonth', 'approvedInstructors', 'recentCourses'));
     }
 
     public function approveInstructor(User $instructor)

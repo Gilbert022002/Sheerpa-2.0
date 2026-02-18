@@ -37,6 +37,15 @@ class UserController extends Controller
     }
 
     /**
+     * Display the specified user.
+     */
+    public function show(User $user)
+    {
+        $user->load(['bookings', 'receivedBookings', 'favorites', 'courses']);
+        return view('admin.users.show', compact('user'));
+    }
+
+    /**
      * Show the form for editing the specified user.
      */
     public function edit(User $user)

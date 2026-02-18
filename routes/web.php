@@ -153,7 +153,7 @@ Route::middleware(['auth'])->group(function () {
 
         // User management routes
         Route::prefix('admin')->resource('users', \App\Http\Controllers\Admin\UserController::class)
-            ->except(['create', 'store', 'show'])
+            ->except(['create', 'store'])
             ->names('admin.users');
     });
 
