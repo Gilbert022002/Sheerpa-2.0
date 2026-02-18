@@ -26,7 +26,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse ($courses as $course)
-                    <div class="bg-white p-6 rounded-2xl border border-border-light soft-shadow flex flex-col h-full">
+                    <div class="bg-white p-6 rounded-2xl border border-border-light soft-shadow flex flex-col h-full transition-transform hover:-translate-y-1">
 
                         {{-- Thumbnail --}}
                         <div class="relative mb-4">
