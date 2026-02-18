@@ -92,9 +92,19 @@ Route::middleware(['auth'])->group(function () {
             ->name('admin.instructors.reject');
 
         // Category management routes
-        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)
+        Route::prefix('admin')->resource('categories', \App\Http\Controllers\Admin\CategoryController::class)
             ->except(['show'])
-            ->names('categories');
+            ->names('admin.categories');
+
+        // Course management routes
+        Route::prefix('admin')->resource('courses', \App\Http\Controllers\Admin\CourseController::class)
+            ->except(['create', 'store', 'show'])
+            ->names('admin.courses');
+
+        // User management routes
+        Route::prefix('admin')->resource('users', \App\Http\Controllers\Admin\UserController::class)
+            ->except(['create', 'store', 'show'])
+            ->names('admin.users');
     });
 
 
