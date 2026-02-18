@@ -62,7 +62,9 @@
                     <p class="text-xs font-black">{{ auth()->user()->name }}</p>
                     <p class="text-[10px] text-text-sub-light font-bold">Administrateur</p>
                 </div>
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ auth()->user()->id }}" class="size-10 rounded-full bg-primary/5 object-cover" alt="Profile">
+                <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">admin_panel_settings</span>
+                </div>
             </div>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

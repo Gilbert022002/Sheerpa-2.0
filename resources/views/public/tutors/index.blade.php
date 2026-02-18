@@ -17,10 +17,9 @@
                             @if($tutor->profile_image)
                                 <img src="{{ asset('storage/' . $tutor->profile_image) . '?' . time() }}" class="w-full h-full object-cover" alt="{{ $tutor->name }}">
                             @else
-                                <div class="absolute inset-0 flex items-center justify-center opacity-20">
-                                    <span class="material-symbols-outlined text-6xl">person</span>
+                                <div class="w-full h-full bg-primary/10 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-6xl text-primary">person</span>
                                 </div>
-                                <img src="{{ asset('images/default/profile-default.jpg') }}" class="w-full h-full object-cover" alt="{{ $tutor->name }}">
                             @endif
                         </div>
                         <div class="p-5">

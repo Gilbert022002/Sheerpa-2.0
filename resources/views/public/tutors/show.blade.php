@@ -6,7 +6,13 @@
     <div class="bg-card-light rounded-3xl p-8 soft-shadow border border-border-light">
         <div class="flex flex-col md:flex-row items-start gap-8">
             <div class="relative">
-                <img src="{{ $tutor->profile_image ? asset('storage/' . $tutor->profile_image) . '?' . time() : asset('images/default/profile-default.jpg') }}" class="size-28 rounded-full bg-primary/5 object-cover" alt="{{ $tutor->name }}">
+                @if($tutor->profile_image)
+                    <img src="{{ asset('storage/' . $tutor->profile_image) . '?' . time() }}" class="size-28 rounded-full bg-primary/5 object-cover" alt="{{ $tutor->name }}">
+                @else
+                    <div class="size-28 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-4xl">person</span>
+                    </div>
+                @endif
             </div>
             <div class="flex-1 text-center md:text-left">
                 <h2 class="text-2xl font-black">{{ $tutor->name }}</h2>

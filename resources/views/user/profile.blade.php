@@ -6,7 +6,13 @@
     <div class="bg-card-light rounded-3xl p-8 soft-shadow border border-border-light">
         <div class="flex flex-col md:flex-row items-start gap-8">
             <div class="relative">
-                <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) . '?' . time() : asset('images/default/profile-default.jpg') }}" class="size-28 rounded-full bg-primary/5 object-cover" alt="Profile">
+                @if(auth()->user()->profile_image)
+                    <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) . '?' . time() : asset('images/default/profile-default.jpg') }}" class="size-28 rounded-full bg-primary/5 object-cover" alt="Profile">
+                @else
+                    <div class="size-28 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-5xl">person</span>
+                    </div>
+                @endif
                 <button type="button" onclick="openProfileModal()" class="absolute bottom-0 right-0 bg-white p-2 rounded-full border border-border-light text-primary hover:text-secondary shadow-sm">
                     <span class="material-symbols-outlined text-sm">edit</span>
                 </button>

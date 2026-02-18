@@ -67,7 +67,13 @@
                         <p class="text-xs font-black">{{ auth()->user()->name }}</p>
                         <p class="text-[10px] text-text-sub-light font-bold">{{ auth()->user()->role }}</p>
                     </div>
-                    <img src="{{ auth()->user()->profile_image ? asset('storage/' . auth()->user()->profile_image) : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . auth()->user()->id }}" class="size-10 rounded-full bg-primary/5 object-cover" alt="Profile">
+                    @if(auth()->user()->profile_image)
+                        <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" class="size-10 rounded-full bg-primary/5 object-cover" alt="Profile">
+                    @else
+                        <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-sm">person</span>
+                        </div>
+                    @endif
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

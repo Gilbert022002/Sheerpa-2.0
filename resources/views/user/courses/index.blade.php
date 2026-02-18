@@ -103,12 +103,13 @@
 
                             {{-- Guide avec image profil --}}
                             <div class="flex items-center gap-3 mb-4">
-                                <img
-                                    src="{{ $course->guide->profile_image
-                                            ? asset('storage/' . $course->guide->profile_image)
-                                            : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . $course->guide->id }}"
-                                    class="size-10 rounded-full border-2 border-border-light"
-                                    alt="{{ $course->guide->name }}">
+                                @if($course->guide->profile_image)
+                                    <img src="{{ asset('storage/' . $course->guide->profile_image) }}" class="size-10 rounded-full border-2 border-border-light" alt="{{ $course->guide->name }}">
+                                @else
+                                    <div class="size-10 rounded-full border-2 border-border-light bg-primary/10 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-primary text-sm">person</span>
+                                    </div>
+                                @endif
                                 <div class="flex-grow min-w-0">
                                     <p class="text-xs text-text-sub-light font-bold">Instructeur</p>
                                     <a href="{{ route('user.tutors.show', $course->guide) }}" class="text-sm font-bold text-text-main-light hover:text-primary transition-colors truncate block" onclick="event.stopPropagation();">

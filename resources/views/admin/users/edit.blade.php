@@ -96,6 +96,21 @@
                 </div>
             @endif
 
+            @if($user->role !== 'admin')
+                <div class="md:col-span-2">
+                    <label for="profile_image" class="block text-sm font-medium text-text-main-light mb-2">Photo de profil</label>
+                    @if($user->profile_image)
+                        <div class="mb-4">
+                            <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Current profile" class="h-32 w-32 object-cover rounded-full">
+                        </div>
+                    @endif
+                    <input type="file" name="profile_image" id="profile_image" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" accept="image/*">
+                    @error('profile_image')
+                        <p class="text-secondary text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+            @endif
+
             <div>
                 <label for="password" class="block text-sm font-medium text-text-main-light mb-2">Nouveau mot de passe</label>
                 <input type="password" name="password" id="password" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all">
@@ -108,19 +123,6 @@
             <div>
                 <label for="password_confirmation" class="block text-sm font-medium text-text-main-light mb-2">Confirmer le mot de passe</label>
                 <input type="password" name="password_confirmation" id="password_confirmation" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all">
-            </div>
-
-            <div class="md:col-span-2">
-                <label for="profile_image" class="block text-sm font-medium text-text-main-light mb-2">Photo de profil</label>
-                @if($user->profile_image)
-                    <div class="mb-4">
-                        <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Current profile" class="h-32 w-32 object-cover rounded-full">
-                    </div>
-                @endif
-                <input type="file" name="profile_image" id="profile_image" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" accept="image/*">
-                @error('profile_image')
-                    <p class="text-secondary text-xs mt-1">{{ $message }}</p>
-                @enderror
             </div>
         </div>
 

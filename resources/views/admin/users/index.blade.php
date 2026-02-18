@@ -66,7 +66,13 @@
                     <tr class="hover:bg-slate-50">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center gap-3">
-                                <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : 'https://api.dicebear.com/7.x/avataaars/svg?seed=' . $user->id }}" class="size-10 rounded-full" alt="{{ $user->name }}">
+                                @if($user->profile_image)
+                                    <img src="{{ asset('storage/' . $user->profile_image) }}" class="size-10 rounded-full" alt="{{ $user->name }}">
+                                @else
+                                    <div class="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-primary text-sm">person</span>
+                                    </div>
+                                @endif
                                 <div>
                                     <div class="font-bold text-text-main-light">{{ $user->name }}</div>
                                     <div class="text-sm text-text-sub-light">{{ $user->email }}</div>
