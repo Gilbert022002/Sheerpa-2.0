@@ -59,7 +59,7 @@
             <template x-for="notification in notifications" :key="notification.id">
                 <a :href="notification.url" class="block p-4 hover:bg-slate-50 transition-colors" :class="notification.is_unread ? 'bg-primary/5' : ''">
                     <div class="flex items-start gap-3">
-                        <div class="size-10 rounded-full" :class="notification.color" flex items-center justify-center flex-shrink-0>
+                        <div class="size-10 rounded-full flex items-center justify-center flex-shrink-0" :class="notification.color">
                             <span class="material-symbols-outlined text-sm" x-text="notification.icon"></span>
                         </div>
                         <div class="flex-1 min-w-0">
