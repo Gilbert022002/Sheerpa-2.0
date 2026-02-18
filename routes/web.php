@@ -81,14 +81,44 @@ Route::middleware(['auth'])->group(function () {
             return redirect()->route('dashboard');
         }
 
-        $upcomingSessions = \App\Models\Booking::where('guide_id', auth()->id())
+        $instructor = auth()->user();
+
+        // Calculate cumulative revenue from confirmed/paid bookings
+        $cumulativeRevenue = \App\Models\Booking::where('bookings.guide_id', $instructor->id)
+            ->whereIn('bookings.status', ['confirmed', 'completed'])
+            ->where('bookings.payment_status', 'paid')
+            ->join('courses', 'bookings.course_id', '=', 'courses.id')
+            ->sum('courses.price');
+
+        // Count upcoming meetings
+        $upcomingMeetingsCount = \App\Models\Booking::where('guide_id', $instructor->id)
+            ->where('status', 'confirmed')
+            ->where('start_datetime', '>', now())
+            ->count();
+
+        // Count new registrations (users who booked with this instructor in the last 30 days)
+        $newRegistrations = \App\Models\Booking::where('guide_id', $instructor->id)
+            ->where('created_at', '>=', now()->subDays(30))
+            ->distinct('user_id')
+            ->count('user_id');
+
+        // Get upcoming sessions for display
+        $upcomingSessions = \App\Models\Booking::where('guide_id', $instructor->id)
             ->where('status', 'confirmed')
             ->where('start_datetime', '>', now())
             ->orderBy('start_datetime', 'asc')
-            ->with(['course', 'course.bookings'])
+            ->with(['course', 'course.bookings', 'user'])
             ->get();
 
-        return view('instructeur dashboard', compact('upcomingSessions'));
+        // Get meeting history (past sessions)
+        $meetingHistory = \App\Models\Booking::where('bookings.guide_id', $instructor->id)
+            ->whereIn('bookings.status', ['completed', 'cancelled'])
+            ->orderBy('bookings.start_datetime', 'desc')
+            ->limit(10)
+            ->with(['course.user', 'user'])
+            ->get();
+
+        return view('instructeur dashboard', compact('upcomingSessions', 'cumulativeRevenue', 'upcomingMeetingsCount', 'newRegistrations', 'meetingHistory'));
     })->name('instructor.dashboard');
 
     Route::post('/instructor/details', [InstructorController::class, 'storeDetails'])

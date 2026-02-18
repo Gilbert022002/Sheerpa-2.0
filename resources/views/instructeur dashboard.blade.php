@@ -30,7 +30,7 @@
                             <span class="text-green-500 text-xs font-black">+12.5%</span>
                         </div>
                         <p class="text-text-sub-light text-xs font-bold uppercase tracking-widest">Revenus cumulés</p>
-                        <h3 class="text-2xl font-black mt-1">1 240,50 €</h3>
+                        <h3 class="text-2xl font-black mt-1">{{ number_format($cumulativeRevenue, 2, ',', ' ') }} €</h3>
                     </div>
 
                     <div class="bg-card-light p-6 rounded-3xl border border-border-light soft-shadow">
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <p class="text-text-sub-light text-xs font-bold uppercase tracking-widest">Meetings à venir</p>
-                        <h3 class="text-2xl font-black mt-1">4</h3>
+                        <h3 class="text-2xl font-black mt-1">{{ $upcomingMeetingsCount }}</h3>
                     </div>
 
                     <div class="bg-card-light p-6 rounded-3xl border border-border-light soft-shadow">
@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         <p class="text-text-sub-light text-xs font-bold uppercase tracking-widest">Nouveaux inscrits</p>
-                        <h3 class="text-2xl font-black mt-1">28</h3>
+                        <h3 class="text-2xl font-black mt-1">{{ $newRegistrations }}</h3>
                     </div>
 
                     <div class="bg-card-light p-6 rounded-3xl border border-border-light soft-shadow">
@@ -192,70 +192,82 @@
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-border-light">
+                                    @forelse($meetingHistory as $booking)
                                     <tr class="hover:bg-slate-50/80 transition-colors group">
                                         <td class="px-6 py-5">
                                             <div class="flex flex-col">
-                                                <p class="font-bold text-sm text-text-main-light group-hover:text-primary transition-colors">Débuter avec React et Tailwind</p>
-                                                <p class="text-[10px] text-text-sub-light font-bold uppercase mt-0.5">Développement Front-end</p>
+                                                <p class="font-bold text-sm text-text-main-light group-hover:text-primary transition-colors">
+                                                    {{ $booking->course ? $booking->course->title : 'Session individuelle' }}
+                                                </p>
+                                                <p class="text-[10px] text-text-sub-light font-bold uppercase mt-0.5">
+                                                    {{ $booking->course ? $booking->course->category : 'N/A' }}
+                                                </p>
                                             </div>
                                         </td>
                                         <td class="px-6 py-5">
-                                            <p class="text-sm font-bold">10 Fév 2026</p>
-                                            <p class="text-xs text-text-sub-light font-medium">10:00 - 11:30</p>
+                                            <p class="text-sm font-bold">{{ \Carbon\Carbon::parse($booking->start_datetime)->isoFormat('DD MMM YYYY') }}</p>
+                                            <p class="text-xs text-text-sub-light font-medium">
+                                                {{ \Carbon\Carbon::parse($booking->start_datetime)->format('H:i') }} - {{ \Carbon\Carbon::parse($booking->end_datetime)->format('H:i') }}
+                                            </p>
                                         </td>
                                         <td class="px-6 py-5">
+                                            @php
+                                                // For course sessions, get all bookings for that course
+                                                if($booking->course) {
+                                                    $allAttendees = $booking->course->bookings->where('status', 'confirmed');
+                                                } else {
+                                                    // For individual sessions, just show the single attendee
+                                                    $allAttendees = collect([$booking]);
+                                                }
+                                                $visibleAttendees = $allAttendees->take(3);
+                                                $remainingCount = $allAttendees->count() - 3;
+                                            @endphp
                                             <div class="flex -space-x-2">
-                                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=A" class="size-7 rounded-full border-2 border-white bg-slate-100 shadow-sm">
-                                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=B" class="size-7 rounded-full border-2 border-white bg-slate-100 shadow-sm">
-                                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=C" class="size-7 rounded-full border-2 border-white bg-slate-100 shadow-sm">
-                                                <div class="size-7 rounded-full border-2 border-white bg-primary text-white text-[9px] flex items-center justify-center font-black shadow-sm">+15</div>
+                                                @foreach($visibleAttendees as $attendee)
+                                                    <div class="size-7 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[9px] font-black shadow-sm" title="{{ $attendee->user->name ?? 'Participant' }}">
+                                                        {{ strtoupper(substr($attendee->user->name ?? 'P', 0, 2)) }}
+                                                    </div>
+                                                @endforeach
+                                                @if($remainingCount > 0)
+                                                    <div class="size-7 rounded-full border-2 border-white bg-primary text-white text-[9px] flex items-center justify-center font-black shadow-sm">+{{ $remainingCount }}</div>
+                                                @endif
+                                                @if($allAttendees->count() === 0)
+                                                    <div class="size-7 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[9px] font-black shadow-sm">0</div>
+                                                @endif
                                             </div>
                                         </td>
                                         <td class="px-6 py-5">
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black rounded-full uppercase">
-                                                <span class="size-1.5 bg-green-500 rounded-full"></span> Terminé
-                                            </span>
+                                            @if($booking->status === 'completed')
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black rounded-full uppercase">
+                                                    <span class="size-1.5 bg-green-500 rounded-full"></span> Terminé
+                                                </span>
+                                            @elseif($booking->status === 'cancelled')
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 text-[10px] font-black rounded-full uppercase">
+                                                    <span class="size-1.5 bg-red-500 rounded-full"></span> Annulé
+                                                </span>
+                                            @else
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-yellow-100 text-yellow-700 text-[10px] font-black rounded-full uppercase">
+                                                    <span class="size-1.5 bg-yellow-500 rounded-full"></span> {{ ucfirst($booking->status) }}
+                                                </span>
+                                            @endif
                                         </td>
                                         <td class="px-6 py-5 text-right">
-                                            <button class="p-2 text-text-sub-light hover:text-primary transition-colors hover:bg-primary/5 rounded-lg">
+                                            <button class="p-2 text-text-sub-light hover:text-primary transition-colors hover:bg-primary/5 rounded-lg" title="Voir les détails">
                                                 <span class="material-symbols-outlined text-lg">analytics</span>
                                             </button>
-                                            <button class="p-2 text-text-sub-light hover:text-secondary transition-colors hover:bg-secondary/5 rounded-lg">
+                                            <button class="p-2 text-text-sub-light hover:text-secondary transition-colors hover:bg-secondary/5 rounded-lg" title="Plus d'options">
                                                 <span class="material-symbols-outlined text-lg">more_vert</span>
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr class="hover:bg-slate-50/80 transition-colors group">
-                                        <td class="px-6 py-5">
-                                            <div class="flex flex-col">
-                                                <p class="font-bold text-sm text-text-main-light group-hover:text-primary transition-colors">Freelance : Bien fixer ses prix</p>
-                                                <p class="text-[10px] text-text-sub-light font-bold uppercase mt-0.5">Entrepreneuriat</p>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-5">
-                                            <p class="text-sm font-bold">04 Fév 2026</p>
-                                            <p class="text-xs text-text-sub-light font-medium">15:00 - 16:00</p>
-                                        </td>
-                                        <td class="px-6 py-5">
-                                            <div class="flex -space-x-2">
-                                                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=D" class="size-7 rounded-full border-2 border-white bg-slate-100 shadow-sm">
-                                                <div class="size-7 rounded-full border-2 border-white bg-primary text-white text-[9px] flex items-center justify-center font-black shadow-sm">+42</div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-5">
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black rounded-full uppercase">
-                                                <span class="size-1.5 bg-green-500 rounded-full"></span> Terminé
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-5 text-right">
-                                            <button class="p-2 text-text-sub-light hover:text-primary transition-colors hover:bg-primary/5 rounded-lg">
-                                                <span class="material-symbols-outlined text-lg">analytics</span>
-                                            </button>
-                                            <button class="p-2 text-text-sub-light hover:text-secondary transition-colors hover:bg-secondary/5 rounded-lg">
-                                                <span class="material-symbols-outlined text-lg">more_vert</span>
-                                            </button>
+                                    @empty
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-12 text-center">
+                                            <span class="material-symbols-outlined text-4xl text-slate-300 mb-3">event_busy</span>
+                                            <p class="text-text-sub-light text-sm font-medium">Aucun meeting dans l'historique</p>
                                         </td>
                                     </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
