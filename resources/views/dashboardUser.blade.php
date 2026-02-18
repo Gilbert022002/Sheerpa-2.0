@@ -61,8 +61,8 @@
                                     <span class="material-symbols-outlined text-6xl">school</span>
                                 </div>
                             @endif
-                            <button class="absolute top-4 right-4 bg-white p-2 rounded-full text-secondary hover:bg-slate-50 transition-colors">
-                                <span class="material-symbols-outlined fill" style="font-variation-settings: 'FILL' 1">favorite</span>
+                            <button class="favorite-btn absolute top-4 right-4 bg-white p-2 rounded-full hover:bg-slate-50 transition-all transform hover:scale-110 {{ $course->isFavoritedBy(auth()->id()) ? 'favorited text-red-500' : 'text-secondary' }}" data-course-id="{{ $course->id }}">
+                                <span class="material-symbols-outlined fill transition-all" style="font-variation-settings: 'FILL' {{ $course->isFavoritedBy(auth()->id()) ? '1' : '0' }}">favorite</span>
                             </button>
                         </div>
                         <div class="p-5">
@@ -185,10 +185,72 @@
         function openProfileModal() {
             document.getElementById('profileModal').classList.remove('hidden');
         }
-        
+
         function closeProfileModal(e) {
             e.stopPropagation();
             document.getElementById('profileModal').classList.add('hidden');
         }
+        
+        // Favorite button functionality
+        document.querySelectorAll('.favorite-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const courseId = this.getAttribute('data-course-id');
+                const icon = this.querySelector('.material-symbols-outlined');
+                
+                // Get CSRF token from meta tag
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+                
+                if (!csrfToken) {
+                    console.error('CSRF token not found');
+                    return;
+                }
+                
+                // Make the request
+                fetch(`/user/courses/${courseId}/favorite`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json',
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Toggle the favorited state with RED color
+                        if (data.is_favorited) {
+                            // Make heart RED and filled
+                            this.classList.add('text-red-500');
+                            this.classList.remove('text-secondary');
+                            icon.style.fontVariationSettings = "'FILL' 1";
+                            icon.style.color = '#ef4444'; // Red-500
+                        } else {
+                            // Make heart orange and empty
+                            this.classList.remove('text-red-500');
+                            this.classList.add('text-secondary');
+                            icon.style.fontVariationSettings = "'FILL' 0";
+                            icon.style.color = '';
+                        }
+                        
+                        // Add bounce animation
+                        icon.classList.add('animate-bounce');
+                        setTimeout(() => {
+                            icon.classList.remove('animate-bounce');
+                        }, 1000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error toggling favorite:', error);
+                });
+            });
+        });
     </script>
 @endsection

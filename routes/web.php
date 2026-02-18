@@ -176,6 +176,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('tutors', [\App\Http\Controllers\PublicTutorController::class, 'index'])
                 ->name('tutors.index');
 
+            // Favorites routes
+            Route::get('favorites', [\App\Http\Controllers\User\FavoriteController::class, 'index'])
+                ->name('favorites.index');
+                
+            Route::post('courses/{course}/favorite', [\App\Http\Controllers\User\FavoriteController::class, 'toggle'])
+                ->name('courses.favorite');
+
             Route::get('bookings', [UserCourseController::class, 'bookings'])
                 ->name('bookings.index');
 

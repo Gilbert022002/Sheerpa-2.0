@@ -94,4 +94,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'guide_id');
     }
+
+    /**
+     * Get the user's favorite courses.
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    /**
+     * Get the user's favorited courses.
+     */
+    public function favoritedCourses()
+    {
+        return $this->belongsToMany(Course::class, 'favorites')->withTimestamps();
+    }
 }

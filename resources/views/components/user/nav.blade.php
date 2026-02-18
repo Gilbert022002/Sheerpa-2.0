@@ -11,6 +11,9 @@
     <a href="{{ route('user.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('user.courses.index') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
         <span class="material-symbols-outlined">school</span> Parcourir les cours
     </a>
+    <a href="{{ route('user.favorites.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('user.favorites.index') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
+        <span class="material-symbols-outlined">favorite</span> Mes Favoris
+    </a>
     <a href="{{ route('user.bookings.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('user.bookings.index') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
         <span class="material-symbols-outlined">calendar_today</span> Mes Réservations
     </a>

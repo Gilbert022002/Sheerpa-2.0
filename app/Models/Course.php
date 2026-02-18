@@ -49,4 +49,20 @@ class Course extends Model
     {
         return $this->hasMany(CourseSlot::class);
     }
+
+    /**
+     * Get the users who have favorited this course.
+     */
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
+    }
+
+    /**
+     * Check if the course is favorited by a specific user.
+     */
+    public function isFavoritedBy($userId)
+    {
+        return $this->favoritedBy()->where('user_id', $userId)->exists();
+    }
 }

@@ -27,17 +27,22 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse ($courses as $course)
                     <div class="bg-white p-6 rounded-2xl border border-border-light soft-shadow flex flex-col h-full">
-                        
-                        {{-- Thumbnail (Gilbert) --}}
-                        @if($course->thumbnail)
-                            <img src="{{ asset('storage/' . $course->thumbnail) }}" 
-                                 alt="Thumbnail" 
-                                 class="w-full h-40 object-cover rounded-xl mb-4">
-                        @else
-                            <div class="bg-slate-200 border-2 border-dashed rounded-xl w-full h-40 flex items-center justify-center mb-4">
-                                <span class="text-slate-500 text-sm">Aucune miniature</span>
-                            </div>
-                        @endif
+
+                        {{-- Thumbnail --}}
+                        <div class="relative mb-4">
+                            @if($course->thumbnail)
+                                <img src="{{ asset('storage/' . $course->thumbnail) }}"
+                                     alt="Thumbnail"
+                                     class="w-full h-40 object-cover rounded-xl">
+                            @else
+                                <div class="bg-slate-200 border-2 border-dashed rounded-xl w-full h-40 flex items-center justify-center">
+                                    <span class="text-slate-500 text-sm">Aucune miniature</span>
+                                </div>
+                            @endif
+                            <button class="favorite-btn absolute top-2 right-2 bg-white p-2 rounded-full hover:bg-slate-50 transition-all transform hover:scale-110 {{ $course->isFavoritedBy(auth()->id()) ? 'favorited text-red-500' : 'text-secondary' }}" data-course-id="{{ $course->id }}">
+                                <span class="material-symbols-outlined fill transition-all" style="font-variation-settings: 'FILL' {{ $course->isFavoritedBy(auth()->id()) ? '1' : '0' }}">favorite</span>
+                            </button>
+                        </div>
 
                         <h4 class="font-black text-lg mb-2 text-text-main-light">
                             {{ $course->title }}
@@ -97,4 +102,68 @@
         </div>
     </main>
 </div>
+
+<script>
+    // Favorite button functionality
+    document.querySelectorAll('.favorite-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const courseId = this.getAttribute('data-course-id');
+            const icon = this.querySelector('.material-symbols-outlined');
+            
+            // Get CSRF token from meta tag
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            
+            if (!csrfToken) {
+                console.error('CSRF token not found');
+                return;
+            }
+            
+            // Make the request
+            fetch(`/user/courses/${courseId}/favorite`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Toggle the favorited state with RED color
+                    if (data.is_favorited) {
+                        // Make heart RED and filled
+                        this.classList.add('text-red-500');
+                        this.classList.remove('text-secondary');
+                        icon.style.fontVariationSettings = "'FILL' 1";
+                        icon.style.color = '#ef4444'; // Red-500
+                    } else {
+                        // Make heart orange and empty
+                        this.classList.remove('text-red-500');
+                        this.classList.add('text-secondary');
+                        icon.style.fontVariationSettings = "'FILL' 0";
+                        icon.style.color = '';
+                    }
+                    
+                    // Add bounce animation
+                    icon.classList.add('animate-bounce');
+                    setTimeout(() => {
+                        icon.classList.remove('animate-bounce');
+                    }, 1000);
+                }
+            })
+            .catch(error => {
+                console.error('Error toggling favorite:', error);
+            });
+        });
+    });
+</script>
 @endsection
