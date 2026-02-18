@@ -29,6 +29,49 @@ class NotificationController extends Controller
     }
 
     /**
+     * Get unread notifications count (for AJAX polling).
+     */
+    public function unreadCount()
+    {
+        $count = Auth::user()->unreadNotificationsCount();
+        
+        return response()->json([
+            'count' => $count,
+        ]);
+    }
+
+    /**
+     * Get recent notifications (for AJAX polling).
+     */
+    public function getRecent()
+    {
+        $notifications = Auth::user()
+            ->notifications()
+            ->with('user')
+            ->latest()
+            ->take(5)
+            ->get()
+            ->map(function ($notification) {
+                return [
+                    'id' => $notification->id,
+                    'type' => $notification->type,
+                    'title' => $notification->title,
+                    'message' => $notification->message,
+                    'icon' => $notification->icon,
+                    'color' => $notification->color,
+                    'is_unread' => $notification->isUnread(),
+                    'created_at' => $notification->created_at->diffForHumans(),
+                    'url' => $this->getNotificationUrl($notification),
+                ];
+            });
+
+        return response()->json([
+            'notifications' => $notifications,
+            'unread_count' => Auth::user()->unreadNotificationsCount(),
+        ]);
+    }
+
+    /**
      * Mark a notification as read.
      */
     public function markAsRead($id)
@@ -36,7 +79,10 @@ class NotificationController extends Controller
         $notification = Auth::user()->notifications()->findOrFail($id);
         $notification->markAsRead();
 
-        return redirect()->back()->with('success', 'Notification marquée comme lue');
+        return response()->json([
+            'success' => true,
+            'message' => 'Notification marquée comme lue',
+        ]);
     }
 
     /**
@@ -45,6 +91,13 @@ class NotificationController extends Controller
     public function markAllAsRead()
     {
         $this->notificationService->markAllAsRead(Auth::user());
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Toutes les notifications ont été marquées comme lues',
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Toutes les notifications ont été marquées comme lues');
     }
@@ -57,16 +110,29 @@ class NotificationController extends Controller
         $notification = Auth::user()->notifications()->findOrFail($id);
         $notification->delete();
 
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Notification supprimée',
+            ]);
+        }
+
         return redirect()->back()->with('success', 'Notification supprimée');
     }
 
     /**
-     * Get unread notifications count (for API/AJAX).
+     * Get the URL for a notification based on its type and data.
      */
-    public function unreadCount()
+    private function getNotificationUrl($notification)
     {
-        return response()->json([
-            'count' => Auth::user()->unreadNotificationsCount(),
-        ]);
+        if (isset($notification->data['course_id'])) {
+            return route('user.courses.show', $notification->data['course_id']);
+        }
+        
+        if (isset($notification->data['booking_id'])) {
+            return route('user.bookings.index');
+        }
+        
+        return route('notifications.index');
     }
 }

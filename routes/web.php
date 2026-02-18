@@ -61,8 +61,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('notifications/{notification}', [\App\Http\Controllers\NotificationController::class, 'destroy'])
         ->name('notifications.destroy');
     
-    Route::get('notifications/unread-count', [\App\Http\Controllers\NotificationController::class, 'unreadCount'])
-        ->name('notifications.unread-count');
+    // AJAX routes for real-time notifications
+    Route::get('api/notifications/unread-count', [\App\Http\Controllers\NotificationController::class, 'unreadCount'])
+        ->name('api.notifications.unread-count');
+    
+    Route::get('api/notifications/recent', [\App\Http\Controllers\NotificationController::class, 'getRecent'])
+        ->name('api.notifications.recent');
 
 
     /*

@@ -37,9 +37,9 @@ class NotificationService
     }
 
     /**
-     * Send a meeting reminder notification (on the day of the meeting).
+     * Send a meeting reminder notification 1 hour before the meeting.
      */
-    public function sendMeetingReminderNotification(Booking $booking): void
+    public function sendMeetingOneHourReminderNotification(Booking $booking): void
     {
         $user = $booking->user;
         $tutor = $booking->guide;
@@ -48,9 +48,9 @@ class NotificationService
         Notification::create([
             'user_id' => $user->id,
             'type' => 'meeting_reminder',
-            'title' => 'Rappel: Meeting aujourd\'hui',
+            'title' => 'Votre meeting commence dans 1 heure',
             'message' => sprintf(
-                'Votre meeting avec %s pour le cours "%s" est prévu aujourd\'hui à %s',
+                'Votre meeting avec %s pour "%s" commence dans 1 heure (%s)',
                 $tutor->name,
                 $booking->course->title ?? 'Session individuelle',
                 \Carbon\Carbon::parse($booking->start_datetime)->format('H:i')
@@ -66,9 +66,9 @@ class NotificationService
         Notification::create([
             'user_id' => $tutor->id,
             'type' => 'meeting_reminder',
-            'title' => 'Rappel: Meeting aujourd\'hui',
+            'title' => 'Votre meeting commence dans 1 heure',
             'message' => sprintf(
-                'Votre meeting avec %s pour le cours "%s" est prévu aujourd\'hui à %s',
+                'Votre meeting avec %s pour "%s" commence dans 1 heure (%s)',
                 $user->name,
                 $booking->course->title ?? 'Session individuelle',
                 \Carbon\Carbon::parse($booking->start_datetime)->format('H:i')
