@@ -25,8 +25,8 @@ class ProfileController extends Controller
             Storage::disk('public')->delete($user->profile_image);
         }
 
-        // Store the new profile image
-        $path = $request->file('profile_image')->store('profile-images', 'public');
+        // Store the new profile image in public/uploads for Hostinger compatibility
+        $path = $request->file('profile_image')->store('uploads/profile-images', 'public');
 
         // Update the user's profile image path
         $user->update([

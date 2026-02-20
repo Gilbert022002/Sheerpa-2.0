@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html class="light" lang="fr">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Create Account - Sheerpa</title>
+    <title>Inscription - Sheerpa</title>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
@@ -51,19 +51,19 @@
 
         <div class="bg-card-light rounded-3xl p-8 md:p-10 soft-shadow border border-border-light">
             <div class="text-center mb-8">
-                <h1 class="text-2xl font-black mb-2">Create your Account</h1>
-                <p class="text-text-sub-light text-sm font-medium">Let's get you started!</p>
+                <h1 class="text-2xl font-black mb-2">Créer votre compte</h1>
+                <p class="text-text-sub-light text-sm font-medium">Commençons ensemble !</p>
             </div>
 
             <form method="POST" action="{{ route('register') }}" class="space-y-6">
                 @csrf
                 <div class="space-y-2">
-                    <label class="text-sm font-bold px-1" for="name">Name</label>
+                    <label class="text-sm font-bold px-1" for="name">Nom</label>
                     <div class="flex items-center rounded-xl bg-background-light border border-transparent focus-within:border-primary/30 transition-all overflow-hidden">
                         <div class="pl-4 text-text-sub-light flex items-center">
                             <span class="material-symbols-outlined text-[20px]">person</span>
                         </div>
-                        <input type="text" id="name" name="name" placeholder="John Doe" required
+                        <input type="text" id="name" name="name" placeholder="Jean Dupont" required
                             class="w-full p-3.5 bg-transparent border-none focus:ring-0 text-sm font-medium outline-none">
                     </div>
                 </div>
@@ -74,13 +74,13 @@
                         <div class="pl-4 text-text-sub-light flex items-center">
                             <span class="material-symbols-outlined text-[20px]">mail</span>
                         </div>
-                        <input type="email" id="email" name="email" placeholder="alex@example.com" required
+                        <input type="email" id="email" name="email" placeholder="alex@exemple.com" required
                             class="w-full p-3.5 bg-transparent border-none focus:ring-0 text-sm font-medium outline-none">
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <label class="text-sm font-bold px-1" for="password">Password</label>
+                    <label class="text-sm font-bold px-1" for="password">Mot de passe</label>
                     <div class="flex items-center rounded-xl bg-background-light border border-transparent focus-within:border-primary/30 transition-all overflow-hidden">
                         <div class="pl-4 text-text-sub-light flex items-center">
                             <span class="material-symbols-outlined text-[20px]">lock</span>
@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <label class="text-sm font-bold px-1" for="password_confirmation">Confirm Password</label>
+                    <label class="text-sm font-bold px-1" for="password_confirmation">Confirmer le mot de passe</label>
                     <div class="flex items-center rounded-xl bg-background-light border border-transparent focus-within:border-primary/30 transition-all overflow-hidden">
                         <div class="pl-4 text-text-sub-light flex items-center">
                             <span class="material-symbols-outlined text-[20px]">lock_reset</span>
@@ -100,24 +100,24 @@
                             class="w-full p-3.5 bg-transparent border-none focus:ring-0 text-sm font-medium outline-none">
                     </div>
                 </div>
-                
+
                 <div class="space-y-2">
-                    <label class="text-sm font-bold px-1" for="role">I am a...</label>
+                    <label class="text-sm font-bold px-1" for="role">Je suis un...</label>
                     <select name="role" id="role" required class="w-full p-3.5 rounded-xl bg-background-light border-transparent focus:border-primary/30 focus:ring-0 text-sm font-medium outline-none">
-                        <option value="user">User (I want to discover new careers)</option>
-                        <option value="instructor">Instructor (I want to share my expertise)</option>
+                        <option value="user">Utilisateur (Je veux découvrir de nouveaux métiers)</option>
+                        <option value="instructor">Instructeur (Je veux partager mon expertise)</option>
                     </select>
                 </div>
 
                 <button type="submit" class="w-full py-4 bg-primary hover:opacity-90 transition-all text-white rounded-xl font-bold text-sm tracking-wide soft-shadow mt-2">
-                    Create Account
+                    Créer un compte
                 </button>
             </form>
 
             <div class="mt-8 pt-8 border-t border-border-light text-center">
                 <p class="text-sm text-text-sub-light font-medium">
-                    Already have an account?
-                    <a href="{{ route('login') }}" class="text-secondary font-bold hover:underline ml-1">Sign in</a>
+                    Vous avez déjà un compte ?
+                    <a href="{{ route('login') }}" class="text-secondary font-bold hover:underline ml-1">Connectez-vous</a>
                 </p>
             </div>
         </div>

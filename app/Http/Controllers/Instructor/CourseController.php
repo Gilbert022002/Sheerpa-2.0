@@ -80,7 +80,8 @@ class CourseController extends Controller
         $courseData = $request->except(['thumbnail', 'course_slots']);
 
         if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', 'public');
+            // Store in public/uploads directory for Hostinger compatibility
+            $thumbnailPath = $request->file('thumbnail')->store('uploads/course-thumbnails', 'public');
             $courseData['thumbnail'] = $thumbnailPath;
         }
 
@@ -193,14 +194,15 @@ class CourseController extends Controller
         ]);
 
         $courseData = $request->except('thumbnail');
-        
+
         if ($request->hasFile('thumbnail')) {
             // Delete old thumbnail if exists
             if ($course->thumbnail) {
                 \Storage::disk('public')->delete($course->thumbnail);
             }
-            
-            $thumbnailPath = $request->file('thumbnail')->store('course-thumbnails', 'public');
+
+            // Store in public/uploads directory for Hostinger compatibility
+            $thumbnailPath = $request->file('thumbnail')->store('uploads/course-thumbnails', 'public');
             $courseData['thumbnail'] = $thumbnailPath;
         }
 

@@ -74,7 +74,8 @@ class UserController extends Controller
                 Storage::disk('public')->delete($user->profile_image);
             }
             
-            $imagePath = $request->file('profile_image')->store('profile-images', 'public');
+            // Store in public/uploads for Hostinger compatibility
+            $imagePath = $request->file('profile_image')->store('uploads/profile-images', 'public');
             $userData['profile_image'] = $imagePath;
         }
 
