@@ -3,7 +3,7 @@
         <span class="material-symbols-outlined">dashboard</span> Tableau de bord
     </a>
     <a href="{{ route('instructor.profile') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('instructor.profile') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
-        <span class="material-symbols-outlined">person</span> My Profile
+        <span class="material-symbols-outlined">person</span> Mon Profil
     </a>
     <a href="{{ route('instructor.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('instructor.courses.index') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
         <span class="material-symbols-outlined">school</span> Mes Cours

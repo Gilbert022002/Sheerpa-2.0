@@ -1,6 +1,6 @@
 @extends('layouts.instructor')
 
-@section('title', 'Sheerpa Guide - My Profile')
+@section('title', 'Sheerpa Guide - Mon Profil')
 
 @section('content')
     <div class="bg-card-light rounded-3xl p-8 soft-shadow border border-border-light">
@@ -23,7 +23,7 @@
                     <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">mail</span> {{ auth()->user()->email }}</span>
                     <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">person</span> {{ auth()->user()->role }}</span>
                     <span class="flex items-center gap-1">
-                        <span class="material-symbols-outlined text-base">grade</span> 
+                        <span class="material-symbols-outlined text-base">grade</span>
                         @if(auth()->user()->instructor_status === 'approved')
                             <span class="text-green-600">Guide certifié</span>
                         @elseif(auth()->user()->instructor_status === 'pending')
@@ -94,7 +94,7 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Modal for editing profile information -->
         <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4">
             <div class="bg-white rounded-2xl max-w-md w-full p-6 relative">
@@ -108,22 +108,22 @@
                         <label class="block text-sm font-medium text-text-main-light mb-2">Nom complet</label>
                         <input type="text" name="name" value="{{ auth()->user()->name }}" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
                     </div>
-                    
+
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-text-main-light mb-2">Email</label>
                         <input type="email" name="email" value="{{ auth()->user()->email }}" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all" required>
                     </div>
-                    
+
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-text-main-light mb-2">Téléphone</label>
                         <input type="tel" name="phone" value="{{ auth()->user()->phone ?? '' }}" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all">
                     </div>
-                    
+
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-text-main-light mb-2">Spécialité</label>
                         <input type="text" name="specialty" value="{{ auth()->user()->specialty ?? '' }}" class="w-full px-4 py-3 bg-white border border-border-light rounded-xl focus:ring-primary focus:border-primary transition-all">
                     </div>
-                    
+
                     <div class="mb-4">
                         <div class="flex justify-between items-center mb-2">
                             <label class="block text-sm font-medium text-text-main-light">Biographie</label>

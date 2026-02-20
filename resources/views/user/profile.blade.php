@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'Sheerpa - My Profile')
+@section('title', 'Sheerpa - Mon Profil')
 
 @section('content')
     <div class="bg-card-light rounded-3xl p-8 soft-shadow border border-border-light">

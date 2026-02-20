@@ -81,7 +81,7 @@
         {{-- Horizontal Navigation Bar --}}
         <nav class="flex items-center justify-center gap-2 overflow-x-auto pb-2">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl whitespace-nowrap {{ request()->routeIs('admin.dashboard') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
-                <span class="material-symbols-outlined">dashboard</span> Dashboard
+                <span class="material-symbols-outlined">dashboard</span> Tableau de bord
             </a>
             <a href="{{ route('admin.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl whitespace-nowrap {{ request()->routeIs('admin.courses.*') ? 'bg-primary/10 text-primary font-bold' : 'text-text-sub-light hover:bg-white hover:text-primary' }} transition-all">
                 <span class="material-symbols-outlined">school</span> Cours
