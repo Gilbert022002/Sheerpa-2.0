@@ -1,7 +1,7 @@
 @extends('layouts.user')
 
-@section('title', 'Sherpa Profile - Dashboard')
-    
+@section('title', 'Sheerpa - Tableau de bord')
+
 @section('content')
 
 
@@ -22,15 +22,15 @@
         </section>
 
         <section>
-            <h3 class="text-lg font-black mb-4 px-2">My Aspirations</h3>
+            <h3 class="text-lg font-black mb-4 px-2">Mes Aspirations</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-white p-6 rounded-2xl border border-border-light soft-shadow flex items-start gap-4">
                     <div class="p-3 rounded-xl bg-primary/10 text-primary">
                         <span class="material-symbols-outlined">rocket_launch</span>
                     </div>
                     <div>
-                        <h4 class="font-bold">Become a web developer</h4>
-                        <p class="text-sm text-text-sub-light mt-1">Focusing on React and Modern CSS Frameworks.</p>
+                        <h4 class="font-bold">Devenir développeur web</h4>
+                        <p class="text-sm text-text-sub-light mt-1">Me concentrer sur React et les frameworks CSS modernes.</p>
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-2xl border border-border-light soft-shadow flex items-start gap-4">
@@ -38,8 +38,8 @@
                         <span class="material-symbols-outlined">forum</span>
                     </div>
                     <div>
-                        <h4 class="font-bold">Improve interview skills</h4>
-                        <p class="text-sm text-text-sub-light mt-1">Practicing technical storytelling and soft skills.</p>
+                        <h4 class="font-bold">Améliorer mes compétences en entretien</h4>
+                        <p class="text-sm text-text-sub-light mt-1">Pratiquer la présentation technique et les soft skills.</p>
                     </div>
                 </div>
             </div>
@@ -91,31 +91,31 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <section class="space-y-4">
-                <h3 class="text-lg font-black px-2">Upcoming Sessions</h3>
+                <h3 class="text-lg font-black px-2">Sessions à venir</h3>
                 <div class="bg-card-light p-6 rounded-3xl border border-border-light soft-shadow">
                     <div class="flex justify-between items-start mb-6">
                         <div>
-                            <p class="text-xs font-black text-secondary uppercase mb-1">Tomorrow at 14:00</p>
-                            <h4 class="font-bold text-lg">Introduction to UI Design</h4>
+                            <p class="text-xs font-black text-secondary uppercase mb-1">Demain à 14:00</p>
+                            <h4 class="font-bold text-lg">Introduction au UI Design</h4>
                         </div>
                         <span class="material-symbols-outlined text-slate-200 text-3xl">event_available</span>
                     </div>
                     <button disabled class="w-full py-3 bg-slate-100 text-slate-400 rounded-xl font-bold text-sm cursor-not-allowed">
-                        Join session (Disabled until start)
+                        Rejoindre la session (Désactivé jusqu'au début)
                     </button>
                 </div>
             </section>
 
             <section class="space-y-4">
-                <h3 class="text-lg font-black px-2">Invoices</h3>
+                <h3 class="text-lg font-black px-2">Factures</h3>
                 <div class="bg-card-light rounded-3xl border border-border-light overflow-hidden soft-shadow">
                     <div class="divide-y divide-border-light">
                         <div class="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
                             <div class="flex items-center gap-3">
                                 <span class="material-symbols-outlined text-primary">description</span>
                                 <div>
-                                    <p class="text-sm font-bold">FEBRUARY_2026.pdf</p>
-                                    <p class="text-xs text-text-sub-light">4 Feb 2026 • $45.00</p>
+                                    <p class="text-sm font-bold">FEVRIER_2026.pdf</p>
+                                    <p class="text-xs text-text-sub-light">4 Fév 2026 • 45,00 €</p>
                                 </div>
                             </div>
                             <button class="p-2 text-primary hover:bg-primary/10 rounded-lg">
@@ -128,8 +128,8 @@
         </div>
 
         <section class="bg-secondary/5 rounded-3xl p-8 border border-secondary/10">
-            <h3 class="text-lg font-black mb-2">Rate your recent guides</h3>
-            <p class="text-sm text-text-sub-light mb-6">Your feedback helps the community grow.</p>
+            <h3 class="text-lg font-black mb-2">Évaluez vos guides récents</h3>
+            <p class="text-sm text-text-sub-light mb-6">Vos commentaires aident la communauté à grandir.</p>
             <div class="flex gap-2">
                 <button class="size-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-slate-200 hover:text-secondary transition-colors">
                     <span class="material-symbols-outlined text-3xl">star</span>
